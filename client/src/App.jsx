@@ -14,6 +14,9 @@ import RegisterPage from './pages/register'
 import { useEffect } from 'react'
 import ScholarShips from './pages/ScholarShips'
 import Details from './pages/Details'
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 const App = () => {
 const homeRef = useRef();
   useEffect(()=>{
@@ -32,6 +35,7 @@ const homeRef = useRef();
 
   return (
     <div ref={homeRef}>
+<ToastContainer />
       <Navbar/>
 <Routes>
 <Route path='/' element={<Home/>}/>
