@@ -32,7 +32,7 @@ const LoginPage = () => {
         setEmail('');
         setPassword('');
         toast.success(response.data.message);
-        navigate('/dashboard');
+        navigate('/');
         
         // Set cookie with expiration based on rememberMe
         Cookies.set('token', response.data.token, {

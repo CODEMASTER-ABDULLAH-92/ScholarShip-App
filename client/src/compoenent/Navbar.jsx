@@ -27,14 +27,6 @@ if (token) {
 
   useEffect(() => {
     checkAuthStatus();
-    
-    // Optional: Add event listener for storage changes if using multiple tabs
-    const handleStorageChange = () => checkAuthStatus();
-    window.addEventListener('storage', handleStorageChange);
-    
-    return () => {
-      window.removeEventListener('storage', handleStorageChange);
-    };
   }, []);
 
   return (

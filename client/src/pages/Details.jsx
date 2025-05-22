@@ -1,16 +1,28 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import data from '../assets/data';
+import { ContextApi } from '../Context/ContextApi';
 
 const Details = () => {
   const { id } = useParams();
   const [scholarship, setScholarship] = useState(null);
 
+  const {data} = useContext(ContextApi);
   useEffect(() => {
     const foundScholarship = data.find((item) => item._id === id);
-    setScholarship(foundScholarship);
-    console.log(foundScholarship);
-  }, [id]);
+    
+    if (foundScholarship) {
+      // Save to localStorage
+      localStorage.setItem("scholarship", JSON.stringify(foundScholarship));
+      setScholarship(foundScholarship);
+    } else {
+      // Try to restore from localStorage on refresh
+      const saved = localStorage.getItem("scholarship");
+      if (saved) {
+        setScholarship(JSON.parse(saved));
+      }
+    }
+  }, [data, id]);
+  
 
   if (!scholarship) {
     return (

@@ -4,8 +4,8 @@ import { addScholarShipDetails, listScholarShipDetails, removeScholarShipDetails
 const scholarshipRouter = express.Router();
 
 scholarshipRouter.post("/add-scholarShipDetails",addScholarShipDetails);
-scholarshipRouter.post("/remove-scholarShipDetails",removeScholarShipDetails);
 scholarshipRouter.get("/list-scholarShipDetails",listScholarShipDetails);
-scholarshipRouter.put("/update-scholarShipDetails",updateScholarShipDetails);
+scholarshipRouter.post("/remove-scholarShipDetails/:id",removeScholarShipDetails);
+scholarshipRouter.put("/update-scholarShipDetails/:id",updateScholarShipDetails);
 
 export default scholarshipRouter;
