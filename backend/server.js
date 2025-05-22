@@ -6,6 +6,7 @@ import morgan from "morgan";
 import cookieParser from "cookie-parser";
 import connectDb from "./db/db.js";
 import userRouter from "./routes/userRoutes.js";
+import scholarshipRouter from "./routes/scholarshipData.route.js";
 
 const app = express();
 app.use(express.json());
@@ -24,7 +25,7 @@ app.get("/", (req, res) => {
 
 
 app.use("/api/user",userRouter);
-
+app.use("/api/scholarship",scholarshipRouter);
 
 
 

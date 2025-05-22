@@ -129,6 +129,7 @@ const LoginUser = async (req,res) => {
     // Return response
     return res.status(201).json({
       success: true,
+      message:res.message,
       token,
       isUserExist: {
         name: isUserExist.name,

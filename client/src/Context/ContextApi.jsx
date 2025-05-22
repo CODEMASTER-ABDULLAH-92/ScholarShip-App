@@ -1,16 +1,33 @@
-import {createContext } from "react";
+import { createContext } from "react";
 
 export const ContextApi = createContext();
 
-const contextProvider = (props) => {
+const ContextProvider = (props) => {
   const url = "http://localhost:8000";
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   const value = {
-    url
+    url,
   };
+
   return (
-    <ContextApi.Provider value={value}>{props.children}</ContextApi.Provider>
+    <ContextApi.Provider value={value}>
+      {props.children}
+    </ContextApi.Provider>
   );
 };
 
-export default contextProvider;
+export default ContextProvider;

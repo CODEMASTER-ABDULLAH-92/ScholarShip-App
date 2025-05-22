@@ -4,7 +4,6 @@ import Footer from './compoenent/Footer'
 import Navbar from './compoenent/Navbar'
 import { Route, Routes } from 'react-router-dom'
 import Address from './pages/Address'
-
 import Docs from "./pages/Docs"
 import Education from "./pages/Education"
 import Home from './pages/Home'
@@ -15,7 +14,7 @@ import { useEffect } from 'react'
 import ScholarShips from './pages/ScholarShips'
 import Details from './pages/Details'
 import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+// import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => {
 const homeRef = useRef();
@@ -46,7 +45,7 @@ const homeRef = useRef();
 <Route path='/login' element={<LoginPage/>}/>
 <Route path='/register' element={<RegisterPage/>}/>
 <Route path='/scholaships' element={<ScholarShips/>}/>
-<Route path='/scholaships/:id' element={<Details/>}/>
+<Route path='/Scholarship/:id' element={<Details/>}/>
       </Routes>
       <Footer/>
     </div>

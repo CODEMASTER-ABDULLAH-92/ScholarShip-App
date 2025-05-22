@@ -9,6 +9,7 @@ const Details = () => {
   useEffect(() => {
     const foundScholarship = data.find((item) => item._id === id);
     setScholarship(foundScholarship);
+    console.log(foundScholarship);
   }, [id]);
 
   if (!scholarship) {
@@ -61,20 +62,20 @@ const Details = () => {
             <ul className="space-y-3">
               <li className="text-gray-700">
                 <span className="font-medium text-gray-800">Academic Level:</span>{' '}
-                {scholarship.eligibility.academicLevel.join(', ')}
+                {scholarship.academicLevel.join(', ')}
               </li>
               <li className="text-gray-700">
                 <span className="font-medium text-gray-800">Minimum GPA:</span>{' '}
-                {scholarship.eligibility.gpaRequirement}
+                {scholarship.gpaRequirement}
               </li>
               <li className="text-gray-700">
                 <span className="font-medium text-gray-800">Fields of Study:</span>{' '}
-                {scholarship.eligibility.fieldsOfStudy.join(', ')}
+                {scholarship.fieldsOfStudy.join(', ')}
               </li>
-              {scholarship.eligibility.otherRequirements && (
+              {scholarship.otherRequirements && (
                 <li className="text-gray-700">
                   <span className="font-medium text-gray-800">Other Requirements:</span>{' '}
-                  {scholarship.eligibility.otherRequirements}
+                  {scholarship.otherRequirements}
                 </li>
               )}
             </ul>
@@ -87,16 +88,16 @@ const Details = () => {
             <ul className="space-y-3">
               <li className="text-gray-700">
                 <span className="font-medium text-gray-800">Amount:</span> $
-                {scholarship.benefits.amount.toLocaleString()}
+                {scholarship.benefitAmount.toLocaleString()}
               </li>
               <li className="text-gray-700">
                 <span className="font-medium text-gray-800">Renewable:</span>{' '}
-                {scholarship.benefits.renewable ? 'Yes' : 'No'}
+                {scholarship.benefitRenewable ? 'Yes' : 'No'}
               </li>
-              {scholarship.benefits.additionalBenefits && (
+              {scholarship.additionalBenefits && (
                 <li className="text-gray-700">
                   <span className="font-medium text-gray-800">Additional Benefits:</span>{' '}
-                  {scholarship.benefits.additionalBenefits}
+                  {scholarship.additionalBenefits}
                 </li>
               )}
             </ul>
@@ -124,7 +125,10 @@ const Details = () => {
         </section>
 
         <div className="flex flex-col sm:flex-row justify-center gap-4 mt-8">
-          <Link to="/personal-Info" className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition duration-300">
+          <Link 
+            to={`/apply/${scholarship._id}`} 
+            className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition duration-300 text-center"
+          >
             Apply Now
           </Link>
           <button className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-3 px-6 rounded-lg transition duration-300">
