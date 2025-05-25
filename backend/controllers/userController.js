@@ -2,34 +2,6 @@ import userModel from "../models/userModel.js";
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
 import validator from 'validator'
-// const registerUser = async (req,res) => {
-//     try {
-//     const {name,email,password} = req.body;
-//     if(!name || !email || !password){
-//         return res.json({ success: false, message: "Missing Details" });
-//     }
-//     const isUserExist = await userModel.findOne({email});
-//     if (isUserExist) {
-//         return res.json({ success: false, message: "User already Exist" });
-//     }
-//     const salt = await bcrypt.genSalt(10);
-//     const hashedPassword = await bcrypt.hash(password,salt);
-//     const userData = await userModel.create({name,email,password:hashedPassword});
-//     const token = jwt.sign({id:userData._id},process.env.JWT_SECRET,{expiresIn:"7d"});
-
-//     res.cookie('token',token,{
-//         httpOnly: true,
-//         secure: process.env.NODE_ENV === "production",
-//         sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
-//         maxAge: 7 * 24 * 60 * 60 * 1000,
-//     })
-//     return res.json({ success: true, token, userData: { email: userData.email, name: userData.name } });
-//     } catch (error) {
-//         res.json({ success: false, message: error.message });
-//         console.error("Err", error.message);
-//     }
-// }
-
 
 
 const registerUser = async (req, res) => {
@@ -87,7 +59,9 @@ const registerUser = async (req, res) => {
       userData: {
         name: userData.name,
         email: userData.email,
+        id:userData._id
       },
+
     });
 
   } catch (error) {
@@ -115,8 +89,6 @@ const LoginUser = async (req,res) => {
     if (!isMatch) {
       return res.json({ success: false, message: "Invalid email or password" });
     }
-
-
     const token = jwt.sign({is:isUserExist._id},process.env.JWT_SECRET, {expiresIn:"7d"});
 
     res.cookie('token', token, {
@@ -132,6 +104,7 @@ const LoginUser = async (req,res) => {
       message:res.message,
       token,
       isUserExist: {
+        id:isUserExist._id,
         name: isUserExist.name,
         email: isUserExist.email,
       },

@@ -7,28 +7,7 @@ import axios from "axios";
 
 
 const ScholarShips = () => {
-const {url ,data} = useContext(ContextApi);
-
-
-// const [data,setData] = useState([]);
-
-// const fetchData = async () =>{
-
-//   try {
-//     const response = await axios.get(`${url}/api/scholarship/list-scholarShipDetails`);
-//     if (response.data.success) {
-//       setData(response.data.data);
-//       toast.success(response.data.message);
-//     }
-//   } catch (error) {
-//     toast.error(error.response.data.message);
-//   }
-// }
-
-// useEffect(()=>{
-// fetchData();
-// },[])
-
+const {data} = useContext(ContextApi);
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
       <h1 className="text-3xl font-bold text-gray-800 mb-8">Available Scholarships</h1>

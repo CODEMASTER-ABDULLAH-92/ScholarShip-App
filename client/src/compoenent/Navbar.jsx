@@ -1,12 +1,15 @@
-import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { data, Link, useNavigate, useParams } from "react-router-dom";
 import { Home, User, Settings, LogOut, BookOpen, School, Menu, X } from "lucide-react";
 import Cookies from "js-cookie";
 import { toast } from "react-toastify";
-
+import { ContextApi } from "../Context/ContextApi"
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  
+ const userId = localStorage.getItem("userId");
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -14,9 +17,11 @@ const Navbar = () => {
     setIsLoggedIn(false);
     toast.success("Logged out successfully");
     navigate("/login");
+    localStorage.removeItem("scholarship");
   };
 
-  const checkAuthStatus = () => {
+
+const checkAuthStatus = () => {
     const token = Cookies.get("token");
 if (token) {
   setIsLoggedIn(true);
@@ -28,7 +33,7 @@ if (token) {
   useEffect(() => {
     checkAuthStatus();
   }, []);
-
+  
   return (
     <nav className="bg-white shadow-md sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -45,21 +50,9 @@ if (token) {
           <div className="hidden md:flex items-center space-x-4">
             {isLoggedIn ? (
               <>
-                <Link to="/dashboard" className="flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 transition">
+                <Link to={`/dashboard/user-dashboard/${userId}`} className="flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 transition">
                   <Home className="h-5 w-5 mr-1" />
                   Dashboard
-                </Link>
-                <Link to="/applications" className="flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 transition">
-                  <BookOpen className="h-5 w-5 mr-1" />
-                  Applications
-                </Link>
-                <Link to="/profile" className="flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 transition">
-                  <User className="h-5 w-5 mr-1" />
-                  Profile
-                </Link>
-                <Link to="/settings" className="flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 transition">
-                  <Settings className="h-5 w-5 mr-1" />
-                  Settings
                 </Link>
                 <button 
                   onClick={handleLogout}

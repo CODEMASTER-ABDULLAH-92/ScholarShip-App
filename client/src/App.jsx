@@ -14,8 +14,11 @@ import { useEffect } from 'react'
 import ScholarShips from './pages/ScholarShips'
 import Details from './pages/Details'
 import { ToastContainer } from 'react-toastify';
-// import 'react-toastify/dist/ReactToastify.css';
-
+import DashPage from './Dashboard/DashPage';
+import { useLocation } from 'react-router-dom';
+import NewScholarshipPage from './Dashboard/AddData';
+import UpdateScholarship from './Dashboard/UpdateScholarship';
+import UserDashBoard from './Dashboard/UserDashBoard'
 const App = () => {
 const homeRef = useRef();
   useEffect(()=>{
@@ -31,11 +34,14 @@ const homeRef = useRef();
     })
   },[])
 
-
+const location = useLocation();
   return (
     <div ref={homeRef}>
 <ToastContainer />
-      <Navbar/>
+{
+  location.pathname.includes("/dashboard/") ? "":   <Navbar/>
+}
+
 <Routes>
 <Route path='/' element={<Home/>}/>
 <Route path='/personal-Info' element={<PersonalDetail/>}/>
@@ -46,6 +52,17 @@ const homeRef = useRef();
 <Route path='/register' element={<RegisterPage/>}/>
 <Route path='/scholaships' element={<ScholarShips/>}/>
 <Route path='/Scholarship/:id' element={<Details/>}/>
+
+
+
+
+{/* Dashboard  */}
+
+<Route path='/dashboard/admin-dashboard/:id' element={<DashPage/>}/>
+<Route path='/dashboard/add-data' element={<NewScholarshipPage/>}/>
+<Route path='/dashboard/update-scholarship/:id' element={<UpdateScholarship/>}/>
+<Route path='/dashboard/user-dashboard/:id' element={<UserDashBoard/>}/>
+
       </Routes>
       <Footer/>
     </div>

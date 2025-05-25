@@ -15,7 +15,7 @@ const LoginPage = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const { url } = useContext(ContextApi);
+  const { url , setUserId } = useContext(ContextApi);
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
@@ -33,7 +33,12 @@ const LoginPage = () => {
         setPassword('');
         toast.success(response.data.message);
         navigate('/');
-        
+        const userId = response.data.isUserExist.id;
+        const name = response.data.isUserExist.name;
+        const email = response.data.isUserExist.email;
+        localStorage.setItem("userId",userId)
+        localStorage.setItem("name",name)
+        localStorage.setItem("email",email)
         // Set cookie with expiration based on rememberMe
         Cookies.set('token', response.data.token, {
           expires: rememberMe ? 30 : 1, // 30 days if remember me is checked, otherwise 1 day

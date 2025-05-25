@@ -15,12 +15,7 @@ const addScholarShipDetails = async (req, res) => {
 };
 
 
-// / app.post('/update/:id',async (req,res)=>{
-    //     let {name,email,image} = req.body;
-    //     let user = await  userModel.findOneAndUpdate({_id: req.params.id},{name,email,image},{new:true})
-    //     //Here this user come to frontent in value field
-    //     res.redirect('/read')
-    // });
+
 
 const updateScholarShipDetails = async (req,res) => {
     try {
