@@ -7,7 +7,11 @@ import cookieParser from "cookie-parser";
 import connectDb from "./db/db.js";
 import userRouter from "./routes/userRoutes.js";
 import scholarshipRouter from "./routes/scholarshipData.route.js";
-
+import personalRouter from "./routes/personalRoute.js";
+import educationRouter from "./routes/EducationRouter.js";
+import docsRouter from "./routes/docsRouter.js";
+import addressRouter from "./routes/addressRouter.js";
+import connectCloudinary from "./config/cloudinary.config.js"
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
@@ -17,7 +21,7 @@ app.use(helmet());
 app.use(cors({origin: "http://localhost:5173",credentials:true}));
 app.use(morgan("dev"));
 
-
+connectCloudinary();
 connectDb();
 
 // API Routing
@@ -28,7 +32,10 @@ app.get("/", (req, res) => {
 
 app.use("/api/user",userRouter);
 app.use("/api/scholarship",scholarshipRouter);
-
+app.use("/api/personal",personalRouter);
+app.use("/api/education", educationRouter);
+app.use("/api/docs", docsRouter);
+app.use("/api/address",addressRouter);
 
 
 const PORT = process.env.PORT || 8000;

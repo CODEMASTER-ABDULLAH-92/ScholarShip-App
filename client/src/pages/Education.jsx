@@ -228,6 +228,25 @@ const Educational = () => {
             />
           </div>
 
+
+
+
+
+          <div className="space-y-2">
+            <label className="text-gray-700 font-medium flex items-center gap-1">
+              <FaUniversity className="text-purple-500" />
+University Name <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              placeholder="University Name"
+              className="w-full border border-gray-300 rounded-lg px-4 py-3 pl-10 focus:ring-2 focus:ring-purple-300 focus:border-purple-500 outline-none transition duration-200"
+            />
+          </div>
+
+
+
+
           {/* CGPA Section */}
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">

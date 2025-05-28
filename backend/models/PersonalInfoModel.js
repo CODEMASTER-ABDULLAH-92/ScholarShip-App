@@ -6,7 +6,16 @@ const personalSchema = new mongoose.Schema({
     religion:{type:String},
     contactNumber:{type:String},
     // About current education
-    currentIN
+    // currentInStitute
+    currentInstituteLevel:{type:String},
+    dateOfAddmission:{type:String},
+    programFaculty:{type:String},
+    universityName:{type:String},
+    profileImage:{type:Array},
+    dateOfBirth:{type:String},
+    domicle:{type:String},
+    familyIncome:{type:String},
+    passportNumber:{type:String},
 },{timestamps:true})
 
 const personalModel = mongoose.models.personalInfo || mongoose.model("personalInfo",personalSchema);

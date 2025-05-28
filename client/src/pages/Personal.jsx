@@ -1,16 +1,12 @@
 import React, { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { UploadCloud, File, X } from "lucide-react";
+import { Phone, Calendar, Home, DollarSign, CreditCard } from 'lucide-react';
 import {
   User,
   UserCircle,
   BookOpen,
-  Phone,
   School,
-  Calendar,
-  Bookmark,
-  Globe,
-  Wallet,
 } from "lucide-react";
 
 const PersonalDetail = () => {
@@ -283,6 +279,71 @@ const PersonalDetail = () => {
                     ))}
                   </select>
                 </div>
+
+
+
+                <div className="space-y-2">
+  <label className="text-gray-700 font-medium flex items-center gap-2">
+    <Calendar size={16} className="text-gray-500" />
+    Date of Birth <span className="text-red-500">*</span>
+  </label>
+  <input
+    type="date"
+    name="dateOfBirth"
+    value={formData.dateOfBirth}
+    onChange={onChangeHandler}
+    className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-blue-300 focus:border-blue-500 outline-none transition"
+    placeholder="Date of Birth"
+    required
+  />
+</div>
+
+<div className="space-y-2">
+  <label className="text-gray-700 font-medium flex items-center gap-2">
+    <Home size={16} className="text-gray-500" />
+    Domicile <span className="text-red-500">*</span>
+  </label>
+  <input
+    type="text"
+    name="domicle"
+    value={formData.domicle}
+    onChange={onChangeHandler}
+    className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-blue-300 focus:border-blue-500 outline-none transition"
+    placeholder="Domicile"
+    required
+  />
+</div>
+
+<div className="space-y-2">
+  <label className="text-gray-700 font-medium flex items-center gap-2">
+    <DollarSign size={16} className="text-gray-500" />
+    Family Income <span className="text-red-500">*</span>
+  </label>
+  <input
+    type="number"
+    name="familyIncome"
+    value={formData.familyIncome}
+    onChange={onChangeHandler}
+    className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-blue-300 focus:border-blue-500 outline-none transition"
+    placeholder="Family Income"
+    required
+  />
+</div>
+
+<div className="space-y-2">
+  <label className="text-gray-700 font-medium flex items-center gap-2">
+    <CreditCard size={16} className="text-gray-500" />
+    Passport Number
+  </label>
+  <input
+    type="text"
+    name="passportNumber"
+    value={formData.passportNumber}
+    onChange={onChangeHandler}
+    className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-blue-300 focus:border-blue-500 outline-none transition"
+    placeholder="Passport Number"
+  />
+</div>
               </div>
             </div>
 
@@ -317,7 +378,7 @@ const PersonalDetail = () => {
       <div className="hidden md:block w-full max-w-[300px] p-6">
         <div className="space-y-2 sticky top-6">
           <label className="block text-sm font-medium text-gray-700">
-            Upload Document
+Upload Profile Image
           </label>
           <div
             className={`relative border-2 border-dashed rounded-lg px-6 py-10 flex flex-col items-center justify-center transition-all ${
