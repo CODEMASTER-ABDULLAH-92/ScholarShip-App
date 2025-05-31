@@ -1,9 +1,31 @@
 import eductionModel from "../models/EducationModel.js";
 
-const addEducation = async (req,res) => {
+const addEducation = async (req, res) => {
     try {
-        const {degreeLevel,schoolName,degreeDiscipline,obtainedMarks,totalMarks,percentage,collegedegreeLevel,collegesName,collegeDegreeDiscipline,collegeOntainedMarks,collegeTotalMarks,collegePercentage,universityDegreeLevel,universityName,universityCurrentSemeter,universityDegreeDiscipline,universityOntainedCGPA,universityTotalCGPA,universityPercentage} = req.body;
+        const {
+            degreeLevel,
+            schoolName,
+            degreeDiscipline,
+            obtainedMarks, // Note: Frontend uses "ontainedMarks" - needs consistency
+            totalMarks,
+            percentage,
+            collegedegreeLevel,
+            collegesName,
+            collegeDegreeDiscipline,
+            collegeObtainedMarks, // Note: Frontend uses "collegeOntainedMarks"
+            collegeTotalMarks,
+            collegePercentage,
+            universityDegreeLevel,
+            universityName,
+            universityCurrentSemeter,
+            universityDegreeDiscipline,
+            universityObtainedCGPA, // Note: Frontend uses "universityOntainedCGPA"
+            universityTotalCGPA,
+            universityPercentage
+        } = req.body;
+
         const education = new eductionModel({
+            // School Education
             degreeLevel,
             schoolName,
             degreeDiscipline,
@@ -11,30 +33,39 @@ const addEducation = async (req,res) => {
             totalMarks,
             percentage,
 
-            
+            // College Education
             collegedegreeLevel,
             collegesName,
             collegeDegreeDiscipline,
-            collegeOntainedMarks,
+            collegeObtainedMarks,
             collegeTotalMarks,
             collegePercentage,
 
-
+            // University Education
             universityDegreeLevel,
+            universityName,
             universityCurrentSemeter,
             universityDegreeDiscipline,
-            universityOntainedCGPA,
+            universityObtainedCGPA,
             universityTotalCGPA,
-            universityPercentage,
-            universityDegreeDiscipline,
-            universityName,
-        })
+            universityPercentage
+        });
+
         await education.save();
-        res.json({success:true, message:"Education added successfully",education});
+        
+        res.status(201).json({
+            success: true,
+            message: "Education added successfully",
+            education
+        });
 
     } catch (error) {
-     console.log("Err in adding education", error);
-    res.json({success:false, message:"Err in adding education"})        
+        console.error("Error in adding education:", error);
+        res.status(500).json({
+            success: false,
+            message: "Error in adding education",
+            error: error.message // Include error message in response for debugging
+        });
     }
 }
 

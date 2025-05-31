@@ -20,6 +20,7 @@ import UpdateScholarship from './Dashboard/UpdateScholarship';
 import UserDashBoard from './Dashboard/UserDashBoard'
 import ScholarshipApplication from './Dashboard/CompleteData';
 import Educational from './pages/Education';
+import Education from './pages/Education';
 const App = () => {
 const homeRef = useRef();
   useEffect(()=>{
@@ -46,7 +47,7 @@ const location = useLocation();
 <Routes>
 <Route path='/' element={<Home/>}/>
 <Route path='/personal-Info' element={<PersonalDetail/>}/>
-<Route path='/education' element={<Educational/>}/>
+<Route path='/education' element={<Education/>}/>
 <Route path='/docs' element={<Docs/>}/>
 <Route path='/address' element={<Address/>}/>
 <Route path='/login' element={<LoginPage/>}/>

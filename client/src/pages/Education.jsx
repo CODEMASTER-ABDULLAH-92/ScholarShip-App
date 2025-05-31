@@ -51,8 +51,7 @@ const Educational = () => {
         }));
         return;
       }
-      
-
+    }
     setFormData(prev => ({
       ...prev,
       [name]: value
@@ -64,17 +63,36 @@ const Educational = () => {
     try {
       const formDataToSend = new FormData();
       
-      // School Education
-      Object.entries(formData).forEach(([key, value]) => {
-        formDataToSend.append(key, value);
-      });
+      formDataToSend.append("degreeLevel", formData.degreeLevel);
+      formDataToSend.append("schoolName", formData.schoolName);
+      formDataToSend.append("degreeDiscipline", formData.degreeDiscipline);
+      formDataToSend.append("ontainedMarks", formData.ontainedMarks);
+      formDataToSend.append("totalMarks", formData.totalMarks);
+      formDataToSend.append("percentage", formData.percentage);
+      
+      // College Education
+      formDataToSend.append("collegedegreeLevel", formData.collegedegreeLevel);
+      formDataToSend.append("collegesName", formData.collegesName);
+      formDataToSend.append("collegeDegreeDiscipline", formData.collegeDegreeDiscipline);
+      formDataToSend.append("collegeOntainedMarks", formData.collegeOntainedMarks);
+      formDataToSend.append("collegeTotalMarks", formData.collegeTotalMarks);
+      formDataToSend.append("collegePercentage", formData.collegePercentage);
+      
+      // University Education
+      formDataToSend.append("universityDegreeLevel", formData.universityDegreeLevel);
+      formDataToSend.append("universityName", formData.universityName);
+      formDataToSend.append("universityCurrentSemeter", formData.universityCurrentSemeter);
+      formDataToSend.append("universityDegreeDiscipline", formData.universityDegreeDiscipline);
+      formDataToSend.append("universityOntainedCGPA", formData.universityOntainedCGPA);
+      formDataToSend.append("universityTotalCGPA", formData.universityTotalCGPA);
+      formDataToSend.append("universityPercentage", formData.universityPercentage);
 
       const response = await axios.post(
         `${url}/api/education/add-education`, 
         formDataToSend,
         {
           headers: {
-            "Content-Type": "multipart/form-data",
+            "Content-Type": "application/json",
           }
         }
       );
@@ -491,5 +509,5 @@ const Educational = () => {
     </div>
   );
 };
-}
+
 export default Educational;
