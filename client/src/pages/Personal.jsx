@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useContext } from "react";
 import { Link } from "react-router-dom";
 import { UploadCloud, File, X } from "lucide-react";
 import { Phone, Calendar, Home, DollarSign, CreditCard } from 'lucide-react';
@@ -8,60 +8,98 @@ import {
   BookOpen,
   School,
 } from "lucide-react";
+import axios from 'axios'
+import { ContextApi } from "../Context/ContextApi";
+import { toast } from "react-toastify";
 
 const PersonalDetail = () => {
+  const { url } = useContext(ContextApi);
+  
   const religion = [
     "Islam",
     "Christianity",
     "Hinduism",
     "Sikhism",
     "Buddhism",
+    "Judaism",
+    "Atheism",
     "Other",
   ];
-  const institutes = ["School", "High School", "College", "University"];
+  
+  const institutes = [
+    "Primary School",
+    "Middle School",
+    "High School",
+    "College",
+    "University",
+    "Technical Institute",
+    "Vocational Training Center",
+  ];
+  
   const disciplines = [
     "Computer Science",
     "Software Engineering",
     "Information Technology",
     "Data Science",
     "Artificial Intelligence",
-    // ... (keep other disciplines)
+    "Cybersecurity",
+    "Electrical Engineering",
+    "Mechanical Engineering",
+    "Business Administration",
+    "Medicine",
   ];
+  
   const universities = [
     "Harvard University",
     "Stanford University",
-    "MIT",
-    // ... (keep other universities)
+    "Massachusetts Institute of Technology (MIT)",
+    "University of Oxford",
+    "University of Cambridge",
+    "California Institute of Technology (Caltech)",
+    "University of California, Berkeley",
+    "National University of Sciences and Technology (NUST)",
+    "University of the Punjab",
+    "FAST-NUCES",
   ];
+  
   const degreeTitles = [
     "BSCS - Computer Science",
     "BSSE - Software Engineering",
-    // ... (keep other degree titles)
+    "BSIT - Information Technology",
+    "BBA - Business Administration",
+    "MBBS - Medicine",
+    "BEEE - Electrical Engineering",
+    "BS Data Science",
   ];
+  
   const domiciles = [
     "Lahore",
     "Faisalabad",
     "Rawalpindi",
-    // ... (keep other domiciles)
+    "Karachi",
+    "Islamabad",
+    "Peshawar",
+    "Multan",
+    "Quetta",
+    "Gujranwala",
+    "Hyderabad",
   ];
+    
 
   const [file, setFile] = useState(null);
   const fileInputRef = useRef(null);
 
   // State for form data
   const [formData, setFormData] = useState({
-    FirstName: "",
-    LastName: "",
-    FatherName: "",
+    firstName: "",
+    lastName: "",
     religion: "",
-    MobileNumber: "",
-    currentInstitueType: "",
-    DateOfAddmission: "",
-    studentRegistrationNumber: "",
-    mainDegree: "",
+    contactNumber: "",
+    currentInstituteLevel: "",
+    dateOfAddmission: "",
+    programFaculty: "",
     universityName: "",
-    degreeTitle: "",
-    userImage: null,
+    profileImage: null,
     dateOfBirth: "",
     domicle: "",
     familyIncome: "",
@@ -72,28 +110,86 @@ const PersonalDetail = () => {
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
     setFile(selectedFile);
-    setFormData({ ...formData, userImage: selectedFile });
+    setFormData(prev => ({ ...prev, profileImage: selectedFile }));
   };
 
-  // Remove selected file
-  const removeFile = () => {
-    setFile(null);
-    setFormData({ ...formData, userImage: null });
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
-    }
-  };
 
   // Handle form input changes
   const onChangeHandler = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
+    setFormData(prev => ({
       ...prev,
       [name]: value,
     }));
   };
 
+  const onSubmitHandler = async (e) => {
+    e.preventDefault();
+    try {
+      const formDataToSend = new FormData();
+      // Object.keys(formData).forEach(key => {
+      //   if (formData[key] !== null) {
+      //     formDataToSend.append(key, formData[key]);
+      //   }
+      // });
+      formDataToSend.append("firstName", formData.firstName)
+      formDataToSend.append("lastName", formData.lastName)
+      formDataToSend.append("contactNumber", formData.contactNumber)
+      formDataToSend.append("currentInstituteLevel", formData.currentInstituteLevel)
+      formDataToSend.append("dateOfAddmission", formData.dateOfAddmission)
+      formDataToSend.append("domicle", formData.domicle)
+      formDataToSend.append("familyIncome", formData.familyIncome)
+      formDataToSend.append("passportNumber", formData.passportNumber)
+      formDataToSend.append("profileImage", formData.profileImage)
+      formDataToSend.append("programFaculty", formData.programFaculty)
+      formDataToSend.append("religion", formData.religion)
+      formDataToSend.append("universityName", formData.universityName)
+      formDataToSend.append("dateOfBirth", formData.dateOfBirth);
 
+      const response = await axios.post(
+        `${url}/api/personal/add-personal-info`,
+        formDataToSend,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        }
+      );
+
+      if (response.data.success) {
+        toast.success("Personal details saved successfully!");
+        // Reset form
+        setFormData({
+          firstName: "",
+          lastName: "",
+          religion: "",
+          contactNumber: "",
+          currentInstituteLevel: "",
+          dateOfAddmission: "",
+          programFaculty: "",
+          universityName: "",
+          profileImage: null,
+          dateOfBirth: "",
+          domicle: "",
+          familyIncome: "",
+          passportNumber: "",
+        });
+        setFile(null);
+        if (fileInputRef.current) {
+          fileInputRef.current.value = "";
+        }
+      } else {
+        toast.error(response.data.message || "Failed to save personal details");
+      }
+    } catch (error) {
+      console.error("Error in adding Personal details", error);
+      toast.error(
+        error.response?.data?.message || 
+        error.message || 
+        "An error occurred while saving the Personal Info"
+      );
+    }
+  };
 
   return (
     <div className="flex min-h-screen bg-gray-50">
@@ -104,7 +200,7 @@ const PersonalDetail = () => {
             <UserCircle size={28} />
             Personal Details
           </h1>
-          <form className="space-y-6">
+          <form className="space-y-6" onSubmit={onSubmitHandler}>
             {/* Basic Information Section */}
             <div className="mb-8">
               <div className="flex items-center gap-3 mb-4">
@@ -122,9 +218,9 @@ const PersonalDetail = () => {
                   </label>
                   <input
                     type="text"
-                    name="FirstName"
+                    name="firstName"
                     onChange={onChangeHandler}
-                    value={formData.FirstName}
+                    value={formData.firstName}
                     className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-blue-300 focus:border-blue-500 outline-none transition"
                     placeholder="First Name"
                     required
@@ -139,9 +235,9 @@ const PersonalDetail = () => {
                   </label>
                   <input
                     type="text"
-                    name="LastName"
+                    name="lastName"
                     onChange={onChangeHandler}
-                    value={formData.LastName}
+                    value={formData.lastName}
                     className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-blue-300 focus:border-blue-500 outline-none transition"
                     placeholder="Last Name"
                     required
@@ -170,19 +266,19 @@ const PersonalDetail = () => {
                   </select>
                 </div>
 
-                {/* Mobile Number */}
+                {/* Contact Number */}
                 <div className="space-y-2">
                   <label className="text-gray-700 font-medium flex items-center gap-2">
                     <Phone size={16} className="text-gray-500" />
-                    Mobile Number <span className="text-red-500">*</span>
+                    Contact Number <span className="text-red-500">*</span>
                   </label>
                   <input
-                    type="tel"
-                    name="MobileNumber"
-                    value={formData.MobileNumber}
+                    type="text"
+                    name="contactNumber"
                     onChange={onChangeHandler}
+                    value={formData.contactNumber}
                     className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-blue-300 focus:border-blue-500 outline-none transition"
-                    placeholder="Mobile Number"
+                    placeholder="Contact Number"
                     required
                   />
                 </div>
@@ -205,8 +301,8 @@ const PersonalDetail = () => {
                     Institute <span className="text-red-500">*</span>
                   </label>
                   <select
-                    name="currentInstitueType"
-                    value={formData.currentInstitueType}
+                    name="currentInstituteLevel"
+                    value={formData.currentInstituteLevel}
                     onChange={onChangeHandler}
                     className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-blue-300 focus:border-blue-500 outline-none transition appearance-none"
                     required
@@ -228,8 +324,8 @@ const PersonalDetail = () => {
                   </label>
                   <input
                     type="date"
-                    name="DateOfAddmission"
-                    value={formData.DateOfAddmission}
+                    name="dateOfAddmission"
+                    value={formData.dateOfAddmission}
                     onChange={onChangeHandler}
                     className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-blue-300 focus:border-blue-500 outline-none transition"
                     required
@@ -243,8 +339,8 @@ const PersonalDetail = () => {
                     Program Discipline <span className="text-red-500">*</span>
                   </label>
                   <select
-                    name="mainDegree"
-                    value={formData.mainDegree}
+                    name="programFaculty"
+                    value={formData.programFaculty}
                     onChange={onChangeHandler}
                     className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-blue-300 focus:border-blue-500 outline-none transition appearance-none"
                     required
@@ -280,70 +376,73 @@ const PersonalDetail = () => {
                   </select>
                 </div>
 
-
+                <div className="space-y-2">
+                  <label className="text-gray-700 font-medium flex items-center gap-2">
+                    <Calendar size={16} className="text-gray-500" />
+                    Date of Birth <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="date"
+                    name="dateOfBirth"
+                    value={formData.dateOfBirth}
+                    onChange={onChangeHandler}
+                    className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-blue-300 focus:border-blue-500 outline-none transition"
+                    placeholder="Date of Birth"
+                    required
+                  />
+                </div>
 
                 <div className="space-y-2">
-  <label className="text-gray-700 font-medium flex items-center gap-2">
-    <Calendar size={16} className="text-gray-500" />
-    Date of Birth <span className="text-red-500">*</span>
-  </label>
-  <input
-    type="date"
-    name="dateOfBirth"
-    value={formData.dateOfBirth}
-    onChange={onChangeHandler}
-    className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-blue-300 focus:border-blue-500 outline-none transition"
-    placeholder="Date of Birth"
-    required
-  />
-</div>
+                  <label className="text-gray-700 font-medium flex items-center gap-2">
+                    <Home size={16} className="text-gray-500" />
+                    Domicile <span className="text-red-500">*</span>
+                  </label>
+                  <select
+                    name="domicle"
+                    value={formData.domicle}
+                    onChange={onChangeHandler}
+                    className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-blue-300 focus:border-blue-500 outline-none transition appearance-none"
+                    required
+                  >
+                    <option value="">Select Domicile</option>
+                    {domiciles.map((dom) => (
+                      <option key={dom} value={dom}>
+                        {dom}
+                      </option>
+                    ))}
+                  </select>
+                </div>
 
-<div className="space-y-2">
-  <label className="text-gray-700 font-medium flex items-center gap-2">
-    <Home size={16} className="text-gray-500" />
-    Domicile <span className="text-red-500">*</span>
-  </label>
-  <input
-    type="text"
-    name="domicle"
-    value={formData.domicle}
-    onChange={onChangeHandler}
-    className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-blue-300 focus:border-blue-500 outline-none transition"
-    placeholder="Domicile"
-    required
-  />
-</div>
+                <div className="space-y-2">
+                  <label className="text-gray-700 font-medium flex items-center gap-2">
+                    <DollarSign size={16} className="text-gray-500" />
+                    Family Income <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="number"
+                    name="familyIncome"
+                    value={formData.familyIncome}
+                    onChange={onChangeHandler}
+                    className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-blue-300 focus:border-blue-500 outline-none transition"
+                    placeholder="Family Income"
+                    required
+                  />
+                </div>
 
-<div className="space-y-2">
-  <label className="text-gray-700 font-medium flex items-center gap-2">
-    <DollarSign size={16} className="text-gray-500" />
-    Family Income <span className="text-red-500">*</span>
-  </label>
-  <input
-    type="number"
-    name="familyIncome"
-    value={formData.familyIncome}
-    onChange={onChangeHandler}
-    className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-blue-300 focus:border-blue-500 outline-none transition"
-    placeholder="Family Income"
-    required
-  />
-</div>
-
-<div className="space-y-2">
-  <label className="text-gray-700 font-medium flex items-center gap-2">
-    <CreditCard size={16} className="text-gray-500" />
-    Passport Number
-  </label>
-  <input
-    type="text"
-    name="passportNumber"
-    value={formData.passportNumber}
-    onChange={onChangeHandler}
-    className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-blue-300 focus:border-blue-500 outline-none transition"
-    placeholder="Passport Number"
-  />
-</div>
+                <div className="space-y-2">
+                  <label className="text-gray-700 font-medium flex items-center gap-2">
+                    <CreditCard size={16} className="text-gray-500" />
+                    Passport Number
+                  </label>
+                  <input
+                    type="text"
+                    name="passportNumber"
+                    value={formData.passportNumber}
+                    onChange={onChangeHandler}
+                    className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-blue-300 focus:border-blue-500 outline-none transition"
+                    placeholder="Passport Number"
+                  />
+                </div>
               </div>
             </div>
 
@@ -378,7 +477,7 @@ const PersonalDetail = () => {
       <div className="hidden md:block w-full max-w-[300px] p-6">
         <div className="space-y-2 sticky top-6">
           <label className="block text-sm font-medium text-gray-700">
-Upload Profile Image
+            Upload Profile Image
           </label>
           <div
             className={`relative border-2 border-dashed rounded-lg px-6 py-10 flex flex-col items-center justify-center transition-all ${
@@ -394,26 +493,7 @@ Upload Profile Image
               className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
               accept="image/*,.pdf"
             />
-            {file ? (
-              <div className="flex flex-col items-center text-center">
-                <div className="flex items-center gap-2 mb-3">
-                  <File className="h-5 w-5 text-blue-500" />
-                  <span className="text-sm font-medium text-gray-900">
-                    {file.name}
-                  </span>
-                  <button
-                    type="button"
-                    onClick={removeFile}
-                    className="p-1 rounded-full hover:bg-gray-200 transition"
-                  >
-                    <X className="h-4 w-4 text-gray-500" />
-                  </button>
-                </div>
-                <span className="text-xs text-gray-500">
-                  Click to change file
-                </span>
-              </div>
-            ) : (
+
               <div className="flex flex-col items-center text-center space-y-3">
                 <UploadCloud className="h-10 w-10 text-gray-400" />
                 <div className="flex flex-col items-center text-sm text-gray-600">
@@ -427,7 +507,6 @@ Upload Profile Image
                   PDF, JPG, PNG up to 5MB
                 </span>
               </div>
-            )}
           </div>
         </div>
       </div>

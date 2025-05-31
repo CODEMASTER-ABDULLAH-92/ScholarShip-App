@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   FaHome,
@@ -9,10 +9,20 @@ import {
   FaChevronRight,
   FaSave,
 } from "react-icons/fa";
+import axios from "axios";
+import { ContextApi } from "../Context/ContextApi";
+import { toast } from "react-toastify";
 
 const Address = () => {
+  const { url } = useContext(ContextApi);
   // Dropdown options
-  const countries = ["United States", "Canada", "United Kingdom", "Pakistan", "India"];
+  const countries = [
+    "United States",
+    "Canada",
+    "United Kingdom",
+    "Pakistan",
+    "India",
+  ];
   const provinces = ["Punjab", "Sindh", "Khyber Pakhtunkhwa", "Balochistan"];
   const districts = ["Lahore", "Islamabad", "Karachi", "Rawalpindi"];
   const cities = ["Lahore", "Islamabad", "Karachi", "Rawalpindi"];
@@ -23,7 +33,7 @@ const Address = () => {
     province: "",
     district: "",
     city: "",
-    fullAddress: ""
+    fullAddress: "",
   });
 
   // Handle input changes
@@ -32,26 +42,53 @@ const Address = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Client-side form handling
-    console.log("Form submitted:", formData);
-    alert('Form data saved locally (check console)');
-    
-    // Reset form if needed
-    setFormData({
-      country: "",
-      province: "",
-      district: "",
-      city: "",
-      fullAddress: ""
-    });
+    try {
+      const formDataToSend = new FormData();
+      formDataToSend.append("country", formData.country);
+      formDataToSend.append("city", formData.city);
+      formDataToSend.append("district", formData.district);
+      formDataToSend.append("fullAddress", formData.fullAddress);
+      formDataToSend.append("province", formData.province);
+      const response = await axios.post(
+        `${url}/api/address/add-address`,
+        formDataToSend,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+      
+      if (response.data.success) {
+        toast.success("Address details saved successfully!");
+        setFormData({
+          country: "",
+          province: "",
+          district: "",
+          city: "",
+          fullAddress: "",
+        });
+      } else {
+        toast.error(response.data.message || "Failed to save address details");
+      }
+    } catch (error) {
+      console.error("Error in adding address details", error);
+      toast.error(
+        error.response?.data?.message ||
+          error.message ||
+          "An error occurred while saving the Address Info"
+      );
+    }
   };
 
   return (
     <div className="max-w-4xl mx-auto bg-gray-100 shadow-lg rounded-lg p-6 sm:p-10 my-10">
-      <h1 className="text-3xl font-bold text-blue-800 text-center mb-6">Address Information</h1>
-      
+      <h1 className="text-3xl font-bold text-blue-800 text-center mb-6">
+        Address Information
+      </h1>
+
       <form onSubmit={handleSubmit}>
         {/* Country */}
         <div className="space-y-2 mb-4">
@@ -67,8 +104,10 @@ const Address = () => {
             required
           >
             <option value="">Select Country</option>
-            {countries.map(country => (
-              <option key={country} value={country}>{country}</option>
+            {countries.map((country) => (
+              <option key={country} value={country}>
+                {country}
+              </option>
             ))}
           </select>
         </div>
@@ -87,8 +126,10 @@ const Address = () => {
             required
           >
             <option value="">Select Province</option>
-            {provinces.map(province => (
-              <option key={province} value={province}>{province}</option>
+            {provinces.map((province) => (
+              <option key={province} value={province}>
+                {province}
+              </option>
             ))}
           </select>
         </div>
@@ -107,8 +148,10 @@ const Address = () => {
             required
           >
             <option value="">Select District</option>
-            {districts.map(district => (
-              <option key={district} value={district}>{district}</option>
+            {districts.map((district) => (
+              <option key={district} value={district}>
+                {district}
+              </option>
             ))}
           </select>
         </div>
@@ -127,8 +170,10 @@ const Address = () => {
             required
           >
             <option value="">Select City</option>
-            {cities.map(city => (
-              <option key={city} value={city}>{city}</option>
+            {cities.map((city) => (
+              <option key={city} value={city}>
+                {city}
+              </option>
             ))}
           </select>
         </div>
@@ -151,21 +196,21 @@ const Address = () => {
 
         {/* Navigation Buttons */}
         <div className="flex flex-col sm:flex-row justify-between mt-6">
-          <Link 
-            to="/PersonalDetail" 
+          <Link
+            to="/PersonalDetail"
             className="bg-gray-300 px-6 py-3 rounded-md text-gray-800 flex items-center gap-2 hover:bg-gray-400 transition"
           >
             <FaChevronLeft /> Previous
           </Link>
           <div className="flex gap-4 mt-4 sm:mt-0">
-            <button 
-              type="submit" 
+            <button
+              type="submit"
               className="bg-blue-600 text-white px-6 py-3 rounded-md flex items-center gap-2 hover:bg-blue-700 transition"
             >
               <FaSave /> Save
             </button>
-            <Link 
-              to="/education" 
+            <Link
+              to="/education"
               className="bg-green-600 text-white px-6 py-3 rounded-md flex items-center gap-2 hover:bg-green-700 transition"
             >
               Next <FaChevronRight />

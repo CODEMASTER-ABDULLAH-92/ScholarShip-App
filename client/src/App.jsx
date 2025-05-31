@@ -5,7 +5,6 @@ import Navbar from './compoenent/Navbar'
 import { Route, Routes } from 'react-router-dom'
 import Address from './pages/Address'
 import Docs from "./pages/Docs"
-import Education from "./pages/Education"
 import Home from './pages/Home'
 import PersonalDetail from './pages/Personal'
 import LoginPage from './pages/Login'
@@ -19,6 +18,8 @@ import { useLocation } from 'react-router-dom';
 import NewScholarshipPage from './Dashboard/AddData';
 import UpdateScholarship from './Dashboard/UpdateScholarship';
 import UserDashBoard from './Dashboard/UserDashBoard'
+import ScholarshipApplication from './Dashboard/CompleteData';
+import Educational from './pages/Education';
 const App = () => {
 const homeRef = useRef();
   useEffect(()=>{
@@ -45,7 +46,7 @@ const location = useLocation();
 <Routes>
 <Route path='/' element={<Home/>}/>
 <Route path='/personal-Info' element={<PersonalDetail/>}/>
-<Route path='/education' element={<Education/>}/>
+<Route path='/education' element={<Educational/>}/>
 <Route path='/docs' element={<Docs/>}/>
 <Route path='/address' element={<Address/>}/>
 <Route path='/login' element={<LoginPage/>}/>
@@ -62,6 +63,8 @@ const location = useLocation();
 <Route path='/dashboard/add-data' element={<NewScholarshipPage/>}/>
 <Route path='/dashboard/update-scholarship/:id' element={<UpdateScholarship/>}/>
 <Route path='/dashboard/user-dashboard/:id' element={<UserDashBoard/>}/>
+<Route path='/dashboard/data' element={<ScholarshipApplication/>}/>
+
 
       </Routes>
       <Footer/>

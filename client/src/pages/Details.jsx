@@ -138,7 +138,7 @@ const Details = () => {
 
         <div className="flex flex-col sm:flex-row justify-center gap-4 mt-8">
           <Link 
-            to={`/apply/${scholarship._id}`} 
+            to={`/personal-Info`} 
             className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition duration-300 text-center"
           >
             Apply Now
