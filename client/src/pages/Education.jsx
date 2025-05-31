@@ -36,22 +36,7 @@ const Educational = () => {
 
   const onChangeHandler = (e) => {
     const {name, value} = e.target;
-    
-    // Auto-calculate percentage when marks change
-    if (name === 'ontainedMarks' || name === 'totalMarks') {
-      const obtained = name === 'ontainedMarks' ? value : formData.ontainedMarks;
-      const total = name === 'totalMarks' ? value : formData.totalMarks;
-      
-      if (obtained && total && !isNaN(obtained)) {
-        const percentage = (parseFloat(obtained) / parseFloat(total)) * 100;
-        setFormData(prev => ({
-          ...prev,
-          [name]: value,
-          percentage: percentage.toFixed(2),
-        }));
-        return;
-      }
-    }
+
     setFormData(prev => ({
       ...prev,
       [name]: value
@@ -249,7 +234,7 @@ const Educational = () => {
                 type="text"
                 name="percentage"
                 value={formData.percentage}
-                readOnly
+                onChange={onChangeHandler}
                 className="w-full border border-gray-300 bg-gray-100 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-300 focus:border-blue-500 outline-none transition duration-200"
               />
             </div>
@@ -360,7 +345,7 @@ const Educational = () => {
                 type="text"
                 name="collegePercentage"
                 value={formData.collegePercentage}
-                readOnly
+                onChange={onChangeHandler}
                 className="w-full border border-gray-300 bg-gray-100 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-300 focus:border-blue-500 outline-none transition duration-200"
               />
             </div>
@@ -481,7 +466,7 @@ const Educational = () => {
                 type="text"
                 name="universityPercentage"
                 value={formData.universityPercentage}
-                readOnly
+                onChange={onChangeHandler}
                 className="w-full border border-gray-300 bg-gray-100 rounded-lg px-4 py-3 focus:ring-2 focus:ring-purple-300 focus:border-purple-500 outline-none transition duration-200"
               />
             </div>
