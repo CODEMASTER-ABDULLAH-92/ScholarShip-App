@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   FaHome,
   FaMapMarkerAlt,
@@ -15,6 +15,7 @@ import { toast } from "react-toastify";
 
 const Address = () => {
   const { url } = useContext(ContextApi);
+  const navigate = useNavigate();
   // Dropdown options
   const countries = [
     "United States",
@@ -63,6 +64,7 @@ const Address = () => {
   
       if (response.data.success) {
         toast.success("Address details saved successfully!");
+        navigate("/education");
         setFormData({
           country: "",
           province: "",

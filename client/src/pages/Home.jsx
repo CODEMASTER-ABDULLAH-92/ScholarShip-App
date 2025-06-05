@@ -6,6 +6,7 @@ import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { useEffect, useRef } from "react";
 import ScrollTrigger from "gsap/src/ScrollTrigger";
+import BackendConnectionNotice from "../compoenent/Backend";
 
 // Register ScrollTrigger plugin
 gsap.registerPlugin(ScrollTrigger, useGSAP);
@@ -21,16 +22,12 @@ const HomePage = () => {
       } 
     );
   })
-  
-  
-
-
-
-
-
   return (
     <div  className="min-h-screen bg-gray-50">
       {/* Hero Section */}
+      <div className="flex justify-center items-center h-[300px]">
+      <BackendConnectionNotice isUnderConstruction={true}/>
+      </div>
       <section className="bg-white py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="flex justify-center mb-6">

@@ -98,9 +98,7 @@ const RegisterPage = ({ onSwitchToLogin }) => {
         password,
       });
   
-      const data = response.data;
-      console.log("✅ Registration success:", data);
-  
+      const data = response.data;  
       if (data.success && data.data && data.data.user && data.data.token) {
         const { user, token } = data.data;
   

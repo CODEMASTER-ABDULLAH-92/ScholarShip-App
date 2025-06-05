@@ -64,12 +64,7 @@ const Docs = () => {
     undergrateTranscript: null,
     affidavit: null,
     domicle: null
-  });
-
-
-
-
-  
+  });  
   const { url } = useContext(ContextApi);
 
   const checkFileSize = (event) => {
@@ -114,10 +109,7 @@ const handleSubmit = async (e) => {
     if (files.affidavit) formData.append('affidavit', files.affidavit);
     if (files.domicle) formData.append('domicle', files.domicle);
 
-    // Debug: Verify what's being sent
-    for (let [key, value] of formData.entries()) {
-      console.log(key, value.name || value);
-    }
+
 
     const response = await axios.post(`${url}/api/docs/add-docs`, formData, {
       headers: {
@@ -129,7 +121,7 @@ const handleSubmit = async (e) => {
 
     if (response.data.success) {
       toast.success("Documents uploaded successfully!");
-      navigate('/success');
+      navigate(`/dashboard/user-dashboard/${localStorage.getItem("userId")}`);
     }
   } catch (error) {
     console.error('Upload error:', error);

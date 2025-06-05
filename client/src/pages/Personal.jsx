@@ -1,5 +1,5 @@
 import React, { useState, useRef, useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { UploadCloud, File, X } from "lucide-react";
 import { Phone, Calendar, Home, DollarSign, CreditCard } from 'lucide-react';
 import {
@@ -14,7 +14,7 @@ import { toast } from "react-toastify";
 
 const PersonalDetail = () => {
   const { url } = useContext(ContextApi);
-  
+  const navigate = useNavigate();
   const religion = [
     "Islam",
     "Christianity",
@@ -158,6 +158,7 @@ const PersonalDetail = () => {
 
       if (response.data.success) {
         toast.success("Personal details saved successfully!");
+        navigate("/address");
         // Reset form
         setFormData({
           firstName: "",

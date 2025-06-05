@@ -45,10 +45,6 @@ const App = () => {
     <div ref={homeRef}>
       <ToastContainer />
       {location.pathname.includes("/dashboard/") ? "" : <Navbar />}
-      <div className="flex justify-center items-center h-[300px]">
-<BackendSectionNotice isUnderConstruction={true}/>
-
-      </div>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/personal-Info" element={<PersonalDetail />} />

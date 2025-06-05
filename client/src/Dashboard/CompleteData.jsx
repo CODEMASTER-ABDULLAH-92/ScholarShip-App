@@ -5,6 +5,8 @@ import {
   FaMapMarkerAlt, 
   FaFileAlt,
   FaSpinner,
+  FaSchool,
+  FaUniversity,
   FaExclamationTriangle
 } from 'react-icons/fa';
 import { ContextApi } from '../Context/ContextApi';
@@ -29,36 +31,14 @@ const ScholarshipApplication = () => {
           docsData = {} 
         } = context || {};
 
-        // Check if we have at least personal data (minimum requirement)
-        // if (!personalData || Object.keys(personalData).length === 0) {
-        //   throw new Error('Basic personal information is required');
-        // }
-
         // Create merged data object with fallbacks
         const mergedData = {
           // Personal Info (required)
           ...personalData,
-          
-          // Address Info (optional with defaults)
-          country: addressData?.country || 'Not provided',
-          province: addressData?.province || 'Not provided',
-          district: addressData?.district || 'Not provided',
-          city: addressData?.city || 'Not provided',
-          fullAddress: addressData?.fullAddress || 'Not provided',
-          domicle: addressData?.domicle || personalData.domicle || 'Not provided',
-          
-          // Education Info (optional with defaults)
-          universityName: educationData?.universityName || personalData.universityName || 'Not provided',
-          programFaculty: educationData?.programFaculty || personalData.programFaculty || 'Not provided',
-          currentInstituteLevel: educationData?.currentInstituteLevel || personalData.currentInstituteLevel || 'Not provided',
-          
-          // Documents (optional)
-          cnicFront: docsData?.cnicFront || null,
-          cnicBack: docsData?.cnicBack || null,
-          affidavit: docsData?.affidavit || null,
-          undergrateTranscript: docsData?.undergrateTranscript || null
+          ...educationData,
+          ...addressData,
+          ...docsData,
         };
-
         setScholarshipData(mergedData);
       } catch (err) {
         console.error('Data processing error:', err);
@@ -132,19 +112,7 @@ const ScholarshipApplication = () => {
               <InfoItem label="Family Income" value={scholarshipData.familyIncome} />
             </div>
           </div>
-        </div>
-
-        {/* Education Information - Only show if we have education data */}
-        {(scholarshipData.universityName !== 'Not provided' || 
-          scholarshipData.programFaculty !== 'Not provided') && (
-          <div className="bg-white rounded-xl shadow-md overflow-hidden mb-8">
-            <div className="p-6 border-b border-gray-200">
-              <h2 className="text-xl font-semibold text-blue-800 flex items-center gap-3">
-                <FaGraduationCap className="text-green-600" />
-                Education Information
-              </h2>
-            </div>
-            <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-3">
                 <InfoItem label="University" value={scholarshipData.universityName} />
                 <InfoItem label="Faculty/Program" value={scholarshipData.programFaculty} />
@@ -154,6 +122,88 @@ const ScholarshipApplication = () => {
                 <InfoItem label="Date of Admission" value={scholarshipData.dateOfAddmission || 'Not provided'} />
               </div>
             </div>
+        </div>
+<img src={scholarshipData.cnicFront} className='h-[100px] w-[100px]' alt="" />
+        {/* Education Information - Only show if we have education data */}
+        {(scholarshipData.universityName !== 'Not provided' || 
+          scholarshipData.programFaculty !== 'Not provided') && (
+          <div className="bg-white rounded-xl shadow-md overflow-hidden mb-8">
+            <div className="p-6 border-b border-gray-200">
+              <h2 className="text-xl font-semibold text-blue-800 flex items-center gap-3">
+                <FaGraduationCap className="text-green-600" />
+                Education Information
+              </h2>
+              <div className="bg-white rounded-xl shadow-md overflow-hidden mb-8">
+          <div className="p-6 border-b border-gray-200">
+            <h2 className="text-xl font-semibold text-blue-800 flex items-center gap-3">
+              <FaSchool className="text-yellow-600" />
+              School Education
+            </h2>
+          </div>
+          <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-3">
+              <InfoItem label="Degree Level" value={scholarshipData.degreeLevel} />
+              <InfoItem label="School Name" value={scholarshipData.schoolName} />
+              <InfoItem label="Discipline" value={scholarshipData.degreeDiscipline} />
+            </div>
+            <div className="space-y-3">
+              <InfoItem label="Obtained Marks" value={scholarshipData.ontainedMarks} />
+              <InfoItem label="Total Marks" value={scholarshipData.totalMarks} />
+              <InfoItem label="Percentage" value={scholarshipData.percentage} />
+            </div>
+          </div>
+        </div>
+
+        {/* College Education */}
+        {scholarshipData.collegesName && (
+          <div className="bg-white rounded-xl shadow-md overflow-hidden mb-8">
+            <div className="p-6 border-b border-gray-200">
+              <h2 className="text-xl font-semibold text-blue-800 flex items-center gap-3">
+                <FaSchool className="text-purple-600" />
+                College Education
+              </h2>
+            </div>
+            <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-3">
+                <InfoItem label="Degree Level" value={scholarshipData.collegedegreeLevel} />
+                <InfoItem label="College Name" value={scholarshipData.collegesName} />
+                <InfoItem label="Discipline" value={scholarshipData.collegeDegreeDiscipline} />
+              </div>
+              <div className="space-y-3">
+                <InfoItem label="Obtained Marks" value={scholarshipData.collegeOntainedMarks} />
+                <InfoItem label="Total Marks" value={scholarshipData.collegeTotalMarks} />
+                <InfoItem label="Percentage" value={scholarshipData.collegePercentage} />
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* University Education */}
+        {scholarshipData.universityName && (
+          <div className="bg-white rounded-xl shadow-md overflow-hidden mb-8">
+            <div className="p-6 border-b border-gray-200">
+              <h2 className="text-xl font-semibold text-blue-800 flex items-center gap-3">
+                <FaUniversity className="text-red-600" />
+                Previous University Education
+              </h2>
+            </div>
+            <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-3">
+                <InfoItem label="Degree Level" value={scholarshipData.universityDegreeLevel} />
+                <InfoItem label="University Name" value={scholarshipData.universityName} />
+                <InfoItem label="Discipline" value={scholarshipData.universityDegreeDiscipline} />
+              </div>
+              <div className="space-y-3">
+                <InfoItem label="Obtained CGPA" value={scholarshipData.universityOntainedCGPA} />
+                <InfoItem label="Total CGPA" value={scholarshipData.universityTotalCGPA} />
+                <InfoItem label="Percentage" value={scholarshipData.universityPercentage} />
+              </div>
+            </div>
+          </div>
+        )}
+
+            </div>
+
           </div>
         )}
 
@@ -208,9 +258,12 @@ const ScholarshipApplication = () => {
                 <DocumentPreview label="Transcript" src={scholarshipData.undergrateTranscript} />
               )}
             </div>
+            <div>
+            </div>
           </div>
         )}
       </div>
+        <img src={scholarshipData.cnicFront} alt="" />
     </div>
   );
 };
@@ -241,5 +294,4 @@ const DocumentPreview = ({ label, src }) => {
     </div>
   );
 };
-
 export default ScholarshipApplication;

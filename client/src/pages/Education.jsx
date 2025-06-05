@@ -1,12 +1,13 @@
 import axios from "axios";
 import { useContext, useState } from "react";
 import { FaSchool, FaUniversity, FaGraduationCap, FaBook, FaPercentage, FaChevronLeft, FaChevronRight, FaSave, FaCalendarAlt, FaClipboardList } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ContextApi } from "../Context/ContextApi";
 import { toast } from "react-toastify";
 
 const Educational = () => {
   const {url} = useContext(ContextApi);
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     /* School Education */
     degreeLevel: "",
@@ -84,6 +85,7 @@ const Educational = () => {
 
       if (response.data.success) {
         toast.success("Educational data saved successfully!");
+        navigate("/docs");
         // Reset form if needed
         setFormData({
           degreeLevel: "",
