@@ -148,7 +148,7 @@ const PersonalDetail = () => {
 
       const response = await axios.post(
         `${url}/api/personal/add-personal-info`,
-        formDataToSend,
+        formDataToSend,{withCredentials:true},
         {
           headers: {
             'Content-Type': 'multipart/form-data'

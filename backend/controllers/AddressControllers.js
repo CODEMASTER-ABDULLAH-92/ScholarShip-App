@@ -3,8 +3,12 @@ import addressModel from "../models/AddressModel.js";
 
 const addAddress = async (req,res) => {
     try {
+        const userId = req.user._id;
+        console.log(userId);
+        
         const {country,province,district,city,fullAddress} = req.body;
         const address = new addressModel({
+            userId,
             country,
             province,
             district,
@@ -43,11 +47,11 @@ const updateAddress = async (req,res) => {
 
 const singleAddress = async (req,res) =>{
     try {
-        const data = await addressModel.findById(req.params.id);
+        const userId = req.user._id;
+        const data = await addressModel.findOne({userId});
         res.json({success:true, message:"Address fetched successfully",data});
     } catch (error) {
         res.json({success:false,message:"Err in fetching address"});
     }
 }
-
 export {addAddress,getAddress,updateAddress,singleAddress};

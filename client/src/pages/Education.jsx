@@ -74,10 +74,10 @@ const Educational = () => {
 
       const response = await axios.post(
         `${url}/api/education/add-education`, 
-        formDataToSend,
+        formDataToSend,{withCredentials:true},
         {
           headers: {
-            "Content-Type": "application/json",
+            // "Content-Type": "application/json",
           }
         }
       );

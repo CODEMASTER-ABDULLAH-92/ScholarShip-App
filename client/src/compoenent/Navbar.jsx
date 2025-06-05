@@ -4,20 +4,31 @@ import { Home, User, Settings, LogOut, BookOpen, School, Menu, X } from "lucide-
 import Cookies from "js-cookie";
 import { toast } from "react-toastify";
 import { ContextApi } from "../Context/ContextApi"
+import axios from "axios";
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-
+  const {url} = useContext(ContextApi);
   
  const userId = localStorage.getItem("userId");
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    Cookies.remove("token");
-    setIsLoggedIn(false);
-    toast.success("Logged out successfully");
-    navigate("/login");
-    localStorage.removeItem("scholarship");
+  const handleLogout = async () => {
+    try {
+      const response = await axios.post(`${url}/api/user/logout`);
+    if (response.data.success) {
+      Cookies.remove("token");
+      toast.success("Logged out successfully");
+      setIsLoggedIn(false);
+      navigate("/login");
+      localStorage.removeItem("scholarship");
+      localStorage.removeItem("userId");
+      localStorage.removeItem("name");
+      localStorage.removeItem("email");
+    }
+    } catch (error) {
+     toast.error(error.response.data.message); 
+    }
   };
 
 

@@ -1,34 +1,34 @@
 import mongoose from "mongoose";
 const educationSchema = new mongoose.Schema({
     // Mataric
-
-    degreeLevel:{type:String},
-    schoolName:{type:String},
-    degreeDiscipline:{type:String},
-    ontainedMarks:{type:String},
-    totalMarks:{type:String},
-    percentage:{type:String},
+    userId:{type:mongoose.Schema.Types.ObjectId, ref:"user"},
+    degreeLevel:{type:String,required:true},
+    schoolName:{type:String,required:true},
+    degreeDiscipline:{type:String,required:true},
+    ontainedMarks:{type:String,required:true},
+    totalMarks:{type:String,required:true},
+    percentage:{type:String,required:true},
     
     
     // college
     
-    collegedegreeLevel:{type:String},
-    collegesName:{type:String},
-    collegeDegreeDiscipline:{type:String},
-    collegeOntainedMarks:{type:String},
-    collegeTotalMarks:{type:String},
-    collegePercentage:{type:String},
+    collegedegreeLevel:{type:String,required:true},
+    collegesName:{type:String,required:true},
+    collegeDegreeDiscipline:{type:String,required:true},
+    collegeOntainedMarks:{type:String,required:true},
+    collegeTotalMarks:{type:String,required:true},
+    collegePercentage:{type:String,required:true},
     
     
     // university
 
-    universityDegreeLevel:{type:String},
-    universityName:{type:String},
-    universityCurrentSemeter:{type:String},
-    universityDegreeDiscipline:{type:String},
-    universityOntainedCGPA:{type:String},
-    universityTotalCGPA:{type:String},
-    universityPercentage:{type:String},
+    universityDegreeLevel:{type:String,required:true},
+    universityName:{type:String,required:true},
+    universityCurrentSemeter:{type:String,required:true},
+    universityDegreeDiscipline:{type:String,required:true},
+    universityOntainedCGPA:{type:String,required:true},
+    universityTotalCGPA:{type:String,required:true},
+    universityPercentage:{type:String,required:true},
 
 },{timestamps:true});
 

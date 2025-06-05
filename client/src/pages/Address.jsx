@@ -51,16 +51,16 @@ const Address = () => {
       formDataToSend.append("district", formData.district);
       formDataToSend.append("fullAddress", formData.fullAddress);
       formDataToSend.append("province", formData.province);
+  
       const response = await axios.post(
         `${url}/api/address/add-address`,
         formDataToSend,
         {
-          headers: {
-            'Content-Type': 'application/json',
-          },
+          withCredentials: true,
+          // Don't set Content-Type manually for FormData
         }
       );
-      
+  
       if (response.data.success) {
         toast.success("Address details saved successfully!");
         setFormData({
@@ -82,7 +82,7 @@ const Address = () => {
       );
     }
   };
-
+  
   return (
     <div className="max-w-4xl mx-auto bg-gray-100 shadow-lg rounded-lg p-6 sm:p-10 my-10">
       <h1 className="text-3xl font-bold text-blue-800 text-center mb-6">

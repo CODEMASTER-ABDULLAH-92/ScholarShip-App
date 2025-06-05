@@ -8,65 +8,131 @@ const registerUser = async (req, res) => {
   try {
     const { name, email, password } = req.body;
 
-    // Check for missing fields
-    if (!name || !email || !password) {
-      return res.status(400).json({ success: false, message: "Missing details" });
+    const validationErrors = [];
+    
+    if (!name?.trim()) {
+      validationErrors.push("Name is required");
+    }
+    
+    if (!email?.trim()) {
+      validationErrors.push("Email is required");
+    } else if (!validator.isEmail(email)) {
+      validationErrors.push("Invalid email format");
+    }
+    
+    if (!password) {
+      validationErrors.push("Password is required");
+    } else {
+      if (password.length < 8) {
+        validationErrors.push("Password must be at least 8 characters long");
+      }
+      if (!/\d/.test(password)) {
+        validationErrors.push("Password must contain at least one number");
+      }
+      if (!/[!@#$%^&*]/.test(password)) {
+        validationErrors.push("Password must contain at least one special character");
+      }
     }
 
-    // Validate email format
-    if (!validator.isEmail(email)) {
-      return res.status(400).json({ success: false, message: "Invalid email format" });
-    }
-
-    // Validate password strength
-    if (password.length < 8 || !/\d/.test(password) || !/[!@#$%^&*]/.test(password)) {
-      return res.status(400).json({ success: false, message: "Password must be at least 8 characters long and include a number and a special character" });
+    if (validationErrors.length > 0) {
+      return res.status(400).json({ 
+        success: false, 
+        message: "Validation failed",
+        errors: validationErrors 
+      });
     }
 
     // Check for existing user
-    const isUserExist = await userModel.findOne({ email });
-    if (isUserExist) {
-      return res.status(409).json({ success: false, message: "User already exists" });
+    const existingUser = await userModel.findOne({ email: email.toLowerCase().trim() });
+    if (existingUser) {
+      return res.status(409).json({ 
+        success: false, 
+        message: "User already exists with this email" 
+      });
     }
 
     // Hash password
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-    // Save user
-    const userData = await userModel.create({ name, email, password: hashedPassword });
-
-    // Ensure JWT_SECRET is defined
-    if (!process.env.JWT_SECRET) {
-      throw new Error("JWT_SECRET not set in environment variables.");
-    }
-
-    // Create token
-    const token = jwt.sign({ id: userData._id }, process.env.JWT_SECRET, { expiresIn: "7d" });
-
-    // Set cookie
-    res.cookie('token', token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    // Create new user
+    const newUser = await userModel.create({ 
+      name: name.trim(),
+      email: email.toLowerCase().trim(),
+      password: hashedPassword 
     });
 
-    // Return response
+    // Verify JWT_SECRET is configured
+    if (!process.env.JWT_SECRET) {
+      throw new Error("JWT_SECRET is not configured in environment variables");
+    }
+
+    // Generate JWT token
+    const token = jwt.sign(
+      { 
+        _id: newUser._id,
+        email: newUser.email
+      }, 
+      process.env.JWT_SECRET, 
+      { 
+        expiresIn: "7d",
+        issuer: "your-app-name",
+        audience: "your-app-client"
+      }
+    );
+
+    // Set secure HTTP-only cookie
+    const cookieOptions = {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+      path: "/",
+      domain: process.env.NODE_ENV === "production" ? ".yourdomain.com" : undefined
+    };
+
+    res.cookie('token', token, cookieOptions);
+
+    // Return success response
     return res.status(201).json({
       success: true,
-      token,
-      userData: {
-        name: userData.name,
-        email: userData.email,
-        id:userData._id
-      },
-
+      message: "User registered successfully",
+      data: {
+        user: {
+          id: newUser._id,
+          name: newUser.name,
+          email: newUser.email,
+          createdAt: newUser.createdAt
+        },
+        token
+      }
     });
 
   } catch (error) {
-    console.error("Register Error:", error);
-    return res.status(500).json({ success: false, message: error.message });
+    console.error("[AUTH ERROR] Register User:", error);
+    
+    // Handle specific errors
+    if (error.name === 'ValidationError') {
+      return res.status(400).json({ 
+        success: false, 
+        message: "Validation failed",
+        errors: Object.values(error.errors).map(err => err.message) 
+      });
+    }
+    
+    if (error.code === 11000) {
+      return res.status(409).json({ 
+        success: false, 
+        message: "User already exists with this email" 
+      });
+    }
+
+    // Generic error response
+    return res.status(500).json({ 
+      success: false, 
+      message: "Internal server error",
+      error: process.env.NODE_ENV === "development" ? error.message : undefined
+    });
   }
 };
 
@@ -89,7 +155,7 @@ const LoginUser = async (req,res) => {
     if (!isMatch) {
       return res.json({ success: false, message: "Invalid email or password" });
     }
-    const token = jwt.sign({is:isUserExist._id},process.env.JWT_SECRET, {expiresIn:"7d"});
+    const token = jwt.sign({_id:isUserExist._id},process.env.JWT_SECRET, {expiresIn:"7d"});
 
     res.cookie('token', token, {
       httpOnly: true,

@@ -4,6 +4,7 @@ import cloudinary from "cloudinary";
 
 const addPersonalInfo = async (req, res) => {
   try {
+    const userId = req.user._id;
     const {
       firstName,
       lastName,
@@ -31,6 +32,7 @@ const addPersonalInfo = async (req, res) => {
     );
 
     const personalInfo = new personalModel({
+      userId,
       firstName,
       lastName,
       religion,
@@ -100,15 +102,19 @@ const updatePersonalInfo = async (req, res) => {
   }
 };
 
-const singlePersonInfo = async (req,res) =>{
+const singlePersonInfo = async (req, res) => {
   try {
-    const data = await personalModel.findById(req.params.id);
-    res.json({success:true, message:"Getting Data Successfully",data})
+    // const userId = req.params.userId;
+    const userId = req.user._id;
+    console.log("req.user =", req.user); 
+    const data = await personalModel.findOne({ userId });
+    res.json({ success: true, message: "Getting Data Successfully!", data, userId });
   } catch (error) {
-    res.json({success:false, message:"Err in Getting Data"})
-    console.error("Err in Getting Data",error)
+    res.json({ success: false, message: "Error in Getting Data" });
+    console.error("Error in Getting Data", error);
   }
-}
+};
+
 
 
 export { addPersonalInfo, getPersonalInfo, updatePersonalInfo,singlePersonInfo };

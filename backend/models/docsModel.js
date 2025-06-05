@@ -1,13 +1,36 @@
-import mongoose from 'mongoose'
+import mongoose from 'mongoose';
 
 const docsSchema = new mongoose.Schema({
-    cnicFront:{type:Array},
-    cnicBack:{type:Array},
-    affidavit:{type:Array},
-    domicle:{type:Array},
-    undergrateTranscript:{type:Array},
-},{timestamps:true});
+    userId: {
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: "user", // Changed to uppercase "User" if your user model is named "User"
+        // required: true
+    },
+    cnicFront: {
+        type: String, // Stores file path or URL
+        required: true
+    },
+    cnicBack: {
+        type: String,
+        required: true
+    },
+    affidavit: {
+        type: String, // Not required if it's optional
+        required: true
+    
+    },
+    domicle: { // Note: Consider renaming to "domicile" for correct spelling
+        type: String,
+        required: true
 
-const docsModel = mongoose.models.docs || mongoose.model("docs", docsSchema);
+    },
+    undergrateTranscript: { // Note: Consider renaming to "undergraduateTranscript"
+        type: String,
+        required: true
+    }
+}, { timestamps: true });
 
-export default docsModel;
+// Improved model export with better practice
+const DocsModel = mongoose.models.Docs || mongoose.model('Docs', docsSchema);
+
+export default DocsModel;

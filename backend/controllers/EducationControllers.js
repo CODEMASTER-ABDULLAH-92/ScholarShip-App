@@ -2,6 +2,7 @@ import eductionModel from "../models/EducationModel.js";
 
 const addEducation = async (req, res) => {
     try {
+        const userId = req.user._id;
         const {
             degreeLevel,
             schoolName,
@@ -26,6 +27,7 @@ const addEducation = async (req, res) => {
 
         const education = new eductionModel({
             // School Education
+            userId,
             degreeLevel,
             schoolName,
             degreeDiscipline,
@@ -94,8 +96,10 @@ const updateEducation = async (req,res) => {
 }
 
 const singleEducation = async (req,res) =>{
+    
     try {
-        const data = await eductionModel.findById(req.params.id);
+        const userId = req.user._id;
+        const data = await eductionModel.findOne({userId});
         res.json({success:true, message:"Education fetched successfully",data});
     } catch (error) {
         res.json({success:false, message:"Err in fetching education"});

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { 
   UserCircle, 
   BookOpen, 
@@ -13,10 +13,17 @@ import {
   Search,
   ChevronDown
 } from "lucide-react";
-import { Link } from 'lucide-react';
-import { NavLink } from 'react-router-dom';
+
+import { NavLink, useParams } from 'react-router-dom';
+import { ContextApi } from '../Context/ContextApi';
 const UserDashBoard = () => {
   // Mock data for dashboard cards
+
+
+
+const userId = localStorage.getItem("userId");
+
+  
   const stats = [
     { title: "Total Applications", value: "24", icon: <FileText size={20} className="text-blue-600" />, bg: "bg-blue-100" },
     { title: "Scholarships", value: "5", icon: <Award size={20} className="text-green-600" />, bg: "bg-green-100" },
@@ -45,7 +52,7 @@ const UserDashBoard = () => {
             <Home size={18} />
             Dashboard
           </a>
-          <a href="#" className="flex items-center gap-3 p-3 rounded-lg text-gray-700 hover:bg-gray-100 font-medium">
+          <a href={`/dashboard/data/${userId}`} className="flex items-center gap-3 p-3 rounded-lg text-gray-700 hover:bg-gray-100 font-medium">
             <UserCircle size={18} />
             Profile
           </a>

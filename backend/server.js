@@ -13,10 +13,9 @@ import docsRouter from "./routes/docsRouter.js";
 import addressRouter from "./routes/addressRouter.js";
 import connectCloudinary from "./config/cloudinary.config.js"
 const app = express();
-app.use(express.json());
 app.use(cookieParser());
-app.use(express.urlencoded({ extended: true }));
-
+app.use(express.json({ limit: '5mb' }));
+app.use(express.urlencoded({ extended: true, limit: '5mb' }));
 app.use(helmet());
 app.use(cors({origin: "http://localhost:5173",credentials:true}));
 app.use(morgan("dev"));

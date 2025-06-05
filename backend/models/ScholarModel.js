@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
 const scholarshipSchema = new mongoose.Schema({
+  userId:{type:mongoose.Schema.Types.ObjectId, ref:"user"},
   title: { type: String },
   description: { type: String },
   university: { type: String },

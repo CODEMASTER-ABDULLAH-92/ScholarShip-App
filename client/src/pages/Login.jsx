@@ -15,7 +15,7 @@ const LoginPage = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const { url , setUserId } = useContext(ContextApi);
+  const { url } = useContext(ContextApi);
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();

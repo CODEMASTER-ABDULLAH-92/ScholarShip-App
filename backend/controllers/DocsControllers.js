@@ -40,10 +40,22 @@ const getDocs = async (req,res) =>{
         res.json({success:true, message:"Docs Fetched Successfully", getDocs})
     } catch (error) {
         console.error("Errr in fetching Data");
-                res.json({success:false, message:"Err in fetching Data"})
+        res.json({success:false, message:"Err in fetching Data"})
     }
 }
 
+
+const getSingleDocs = async (req,res) => {
+    
+    try {
+        const userId = req.user._id;
+        const data = await docsModel.findOne({userId});
+        res.json({success:true, message:"Docs Fetched Successfully", data})
+        
+    } catch (error) {
+        res.json({success:false, message:"Err in fetching Data"})
+    }
+}
 const updateDocs = async (req,res) =>{
     try {
         
@@ -52,4 +64,4 @@ const updateDocs = async (req,res) =>{
     }
 }
 
-export {addDocs,getDocs,updateDocs};
+export {addDocs,getDocs,updateDocs,getSingleDocs};
