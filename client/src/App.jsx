@@ -20,6 +20,7 @@ import UpdateScholarship from "./Dashboard/UpdateScholarship";
 import UserDashBoard from "./Dashboard/UserDashBoard";
 import ScholarshipApplication from "./Dashboard/CompleteData";
 import Education from "./pages/Education";
+import BackendSectionNotice from "./compoenent/Backend";
 const App = () => {
   const homeRef = useRef();
   useEffect(() => {
@@ -44,7 +45,10 @@ const App = () => {
     <div ref={homeRef}>
       <ToastContainer />
       {location.pathname.includes("/dashboard/") ? "" : <Navbar />}
+      <div className="flex justify-center items-center h-[300px]">
+<BackendSectionNotice isUnderConstruction={true}/>
 
+      </div>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/personal-Info" element={<PersonalDetail />} />
