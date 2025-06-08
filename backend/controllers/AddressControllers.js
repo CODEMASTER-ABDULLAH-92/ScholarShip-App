@@ -1,6 +1,4 @@
 import addressModel from "../models/AddressModel.js";
-
-
 const addAddress = async (req,res) => {
     try {
         const userId = req.user._id;
@@ -49,7 +47,9 @@ const singleAddress = async (req,res) =>{
     try {
         const userId = req.user._id;
         const data = await addressModel.findOne({userId});
-        res.json({success:true, message:"Address fetched successfully",data});
+        const isCompleted = data.country && data.city && data.province && data.fullAddress && data.district;
+        let status = isCompleted ? "Completed" : "Pending";
+        res.json({success:true, message:"Address fetched successfully",data, status});
     } catch (error) {
         res.json({success:false,message:"Err in fetching address"});
     }

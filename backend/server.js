@@ -12,6 +12,7 @@ import educationRouter from "./routes/EducationRouter.js";
 import docsRouter from "./routes/docsRouter.js";
 import addressRouter from "./routes/addressRouter.js";
 import connectCloudinary from "./config/cloudinary.config.js"
+import recruiterRouter from "./routes/recruiter.route.js";
 const app = express();
 app.use(cookieParser());
 app.use(express.json({ limit: '5mb' }));
@@ -35,7 +36,7 @@ app.use("/api/personal",personalRouter);
 app.use("/api/education", educationRouter);
 app.use("/api/docs", docsRouter);
 app.use("/api/address",addressRouter);
-
+app.use("/api/recruiter", recruiterRouter);
 
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT} (${process.env.PORT || "default 8000"})`));

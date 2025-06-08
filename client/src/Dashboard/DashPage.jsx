@@ -16,6 +16,7 @@ import { Link } from 'react-router-dom';
 import { ContextApi } from '../Context/ContextApi';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import Cookies from 'js-cookie'
 const DashPage = () => {
   const {data,url} = useContext(ContextApi);
   // Mock data
@@ -32,6 +33,21 @@ const handleDelete = async (id) =>{
   }
 }
 
+const logoutRecuriter = async () => {
+  try {
+    const response = await axios.post(`${url}/api/recruiter/recruiter-logout`);
+    if (response.data.success) {
+      toast.success(response.data.message);
+      localStorage.removeItem("nameR");
+      localStorage.removeItem("emailR");
+      localStorage.removeItem("recruiterId")
+      Cookies.remove("tokenR")
+    }
+  } catch (error) {
+    error("Err in Logout ", error);
+    toast.error(error.response.data.message);
+  }
+}
   const stats = [
     { title: "Total Scholarships", value: "42", icon: <Award size={20} className="text-blue-600" />, change: "+5 this month" },
     { title: "Active Applicants", value: "1,248", icon: <Users size={20} className="text-green-600" />, change: "12% increase" },
@@ -71,7 +87,7 @@ const handleDelete = async (id) =>{
       <header className="bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16 items-center">
-            <h1 className="text-xl font-bold text-gray-900">Scholarship Admin Portal</h1>
+            <h1 className="text-xl font-bold text-gray-900 from-red-500 to-blue-500 bg-gradient-to-r">Scholarship Admin Portal</h1>
             
             <div className="flex items-center space-x-4">
               <button className="p-1 rounded-full text-gray-500 hover:text-gray-700 focus:outline-none">
@@ -80,10 +96,21 @@ const handleDelete = async (id) =>{
               
               <div className="flex items-center">
                 <div className="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-medium">
-                  A
+                  {localStorage.getItem("nameR").charAt(0)}
                 </div>
-                <span className="ml-2 text-sm font-medium text-gray-700 hidden md:inline">Admin</span>
-                <ChevronDown size={16} className="ml-1 text-gray-500 hidden md:inline" />
+                <div className="relative group inline-block">
+  <ChevronDown
+    size={16}
+    className="ml-1 text-gray-500  md:inline cursor-pointer"
+  />
+  <Link
+    to={"/"} onClick={logoutRecuriter}
+    className="absolute top-7 right-0 hidden group-hover:block bg-gray-200 p-2 rounded shadow"
+  >
+    Logout
+  </Link>
+</div>
+
               </div>
             </div>
           </div>

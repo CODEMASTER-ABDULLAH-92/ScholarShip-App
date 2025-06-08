@@ -14,6 +14,9 @@ const ContextProvider = (props) => {
   const [addressData, setAddressData] = useState({});
   const [educationData, setEducationData] = useState({});
   const [docsData, setDocsData] = useState({});
+  const [status,setStatus] = useState("");
+  const [statusEdu,setStatusEdu] = useState("");
+  const [statusAddress,setStatusAddress] = useState("");
   // const {userId} = useParams()
 console.log(personalData);
 console.log(addressData);
@@ -28,6 +31,7 @@ console.log(docsData);
       );
       if (response.data.success) {
         setPersonalData(response.data.data);
+        setStatus(response.data.status)
       }
     } catch (error) {
       toast.error(error.response.data.message);
@@ -42,6 +46,7 @@ console.log(docsData);
       );
       if (response.data.success) {
         setAddressData(response.data.data);
+        setStatusAddress(response.data.status);
       }
     } catch (error) {
       toast.error(error.response.data.message);
@@ -57,7 +62,9 @@ console.log(docsData);
       );
       if (response.data.success) {
         setEducationData(response.data.data);
+        setStatusEdu(response.data.status)
       }
+
     } catch (error) {
       toast.error(error.response.data.message);
     }
@@ -106,6 +113,9 @@ console.log(docsData);
     addressData,
     educationData,
     docsData,
+    status,
+    statusAddress,
+    statusEdu
   };
 
   return (

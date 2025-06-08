@@ -45,17 +45,48 @@ const getDocs = async (req,res) =>{
 }
 
 
-const getSingleDocs = async (req,res) => {
+// const getSingleDocs = async (req,res) => {
     
-    try {
-        const userId = req.user._id;
-        const data = await docsModel.findOne({userId});
-        res.json({success:true, message:"Docs Fetched Successfully", data})
+//     try {
+//         const userId = req.user._id;
         
+//         const data = await docsModel.findOne({ userId });
+//         console.log(data);
+//         console.log(userId);
+        
+//         // const isCompleted = data.cnicFront && data.cnicBack && data.affidavit && data.undergrateTranscript && data.domicle; // replace with actual fields
+
+//     //    let  status = isCompleted ? "completed" : "pending";
+//         res.json({success:true, message:"Docs Fetched Successfully", data,})
+        
+//     } catch (error) {
+//         res.json({success:false, message:"Err in fetching Data"})
+//     }
+// }
+
+const getSingleDocs = async (req, res) => {
+    try {
+      const userId = req.user?._id;
+  console.log(req.us);
+  
+      if (!userId) {
+        return res.status(401).json({ success: false, message: "Unauthorized" });
+      }
+  
+      const data = await docsModel.findOne({ userId });
+      console.log("Fetched Data:", data);
+  
+      if (!data) {
+        return res.status(404).json({ success: false, message: "No document found" });
+      }
+  
+      res.status(200).json({ success: true, message: "Docs fetched successfully", data });
     } catch (error) {
-        res.json({success:false, message:"Err in fetching Data"})
+      console.error("Error fetching documents:", error);
+      res.status(500).json({ success: false, message: "Error fetching data", error: error.message });
     }
-}
+  };
+  
 const updateDocs = async (req,res) =>{
     try {
         

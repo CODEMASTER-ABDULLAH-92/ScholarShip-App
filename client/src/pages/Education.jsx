@@ -13,15 +13,14 @@ const Educational = () => {
     degreeLevel: "",
     schoolName: "",
     degreeDiscipline: "",
-    ontainedMarks: "",
+    obtainedMarks: "",
     totalMarks: "",
     percentage: "",
-
     /* College Education */
     collegedegreeLevel: "",
     collegesName: "",
     collegeDegreeDiscipline: "",
-    collegeOntainedMarks: "",
+    collegeObtainedMarks: "",
     collegeTotalMarks: "",
     collegePercentage: "",
 
@@ -30,7 +29,7 @@ const Educational = () => {
     universityName: "",
     universityCurrentSemeter: "",
     universityDegreeDiscipline: "",
-    universityOntainedCGPA: "",
+    universityObtainedCGPA: "",
     universityTotalCGPA: "",
     universityPercentage: ""
   });
@@ -52,7 +51,7 @@ const Educational = () => {
       formDataToSend.append("degreeLevel", formData.degreeLevel);
       formDataToSend.append("schoolName", formData.schoolName);
       formDataToSend.append("degreeDiscipline", formData.degreeDiscipline);
-      formDataToSend.append("ontainedMarks", formData.ontainedMarks);
+      formDataToSend.append("obtainedMarks", formData.obtainedMarks);
       formDataToSend.append("totalMarks", formData.totalMarks);
       formDataToSend.append("percentage", formData.percentage);
       
@@ -60,7 +59,7 @@ const Educational = () => {
       formDataToSend.append("collegedegreeLevel", formData.collegedegreeLevel);
       formDataToSend.append("collegesName", formData.collegesName);
       formDataToSend.append("collegeDegreeDiscipline", formData.collegeDegreeDiscipline);
-      formDataToSend.append("collegeOntainedMarks", formData.collegeOntainedMarks);
+      formDataToSend.append("collegeObtainedMarks", formData.collegeObtainedMarks);
       formDataToSend.append("collegeTotalMarks", formData.collegeTotalMarks);
       formDataToSend.append("collegePercentage", formData.collegePercentage);
       
@@ -69,7 +68,7 @@ const Educational = () => {
       formDataToSend.append("universityName", formData.universityName);
       formDataToSend.append("universityCurrentSemeter", formData.universityCurrentSemeter);
       formDataToSend.append("universityDegreeDiscipline", formData.universityDegreeDiscipline);
-      formDataToSend.append("universityOntainedCGPA", formData.universityOntainedCGPA);
+      formDataToSend.append("universityObtainedCGPA", formData.universityObtainedCGPA);
       formDataToSend.append("universityTotalCGPA", formData.universityTotalCGPA);
       formDataToSend.append("universityPercentage", formData.universityPercentage);
 
@@ -97,14 +96,14 @@ const Educational = () => {
           collegedegreeLevel: "",
           collegesName: "",
           collegeDegreeDiscipline: "",
-          collegeOntainedMarks: "",
+          collegeObtainedMarks: "",
           collegeTotalMarks: "",
           collegePercentage: "",
           universityDegreeLevel: "",
           universityName: "",
           universityCurrentSemeter: "",
           universityDegreeDiscipline: "",
-          universityOntainedCGPA: "",
+          universityObtainedCGPA: "",
           universityTotalCGPA: "",
           universityPercentage: ""
         });
@@ -206,8 +205,8 @@ const Educational = () => {
                 <label className="text-gray-700 font-medium">Obtained Marks <span className="text-red-500">*</span></label>
                 <input
                   type="number"
-                  name="ontainedMarks"
-                  value={formData.ontainedMarks}
+                  name="obtainedMarks"
+                  value={formData.obtainedMarks}
                   onChange={onChangeHandler}
                   placeholder="Obtained marks"
                   className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-300 focus:border-blue-500 outline-none transition duration-200"
@@ -317,8 +316,8 @@ const Educational = () => {
                 <label className="text-gray-700 font-medium">Obtained Marks <span className="text-red-500">*</span></label>
                 <input
                   type="number"
-                  name="collegeOntainedMarks"
-                  value={formData.collegeOntainedMarks}
+                  name="collegeObtainedMarks"
+                  value={formData.collegeObtainedMarks}
                   onChange={onChangeHandler}
                   placeholder="Obtained marks"
                   className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-300 focus:border-blue-500 outline-none transition duration-200"
@@ -438,8 +437,8 @@ const Educational = () => {
                 <label className="text-gray-700 font-medium">Obtained CGPA <span className="text-red-500">*</span></label>
                 <input
                   type="number"
-                  name="universityOntainedCGPA"
-                  value={formData.universityOntainedCGPA}
+                  name="universityObtainedCGPA"
+                  value={formData.universityObtainedCGPA}
                   onChange={onChangeHandler}
                   placeholder="Obtained CGPA"
                   className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-purple-300 focus:border-purple-500 outline-none transition duration-200"

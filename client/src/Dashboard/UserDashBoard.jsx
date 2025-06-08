@@ -1,20 +1,16 @@
 import React, { useContext } from 'react';
+import { FiLogOut } from 'react-icons/fi';
 import { 
-  UserCircle, 
-  BookOpen, 
+  UserCircle,  
   School, 
-  Calendar, 
   FileText, 
   Award, 
   Home, 
-  Mail, 
-  Settings,
   Bell,
   Search,
-  ChevronDown
 } from "lucide-react";
 
-import { NavLink, useParams } from 'react-router-dom';
+import { Link, NavLink, useParams } from 'react-router-dom';
 import { ContextApi } from '../Context/ContextApi';
 const UserDashBoard = () => {
   // Mock data for dashboard cards
@@ -22,8 +18,7 @@ const UserDashBoard = () => {
 
 
 const userId = localStorage.getItem("userId");
-
-  
+const {status, statusAddress, statusEdu} = useContext(ContextApi);
   const stats = [
     { title: "Total Applications", value: "24", icon: <FileText size={20} className="text-blue-600" />, bg: "bg-blue-100" },
     { title: "Scholarships", value: "5", icon: <Award size={20} className="text-green-600" />, bg: "bg-green-100" },
@@ -44,7 +39,7 @@ const userId = localStorage.getItem("userId");
       <div className="hidden md:block w-64 bg-white border-r border-gray-200 p-4">
         <div className="flex items-center gap-3 mb-8 p-2">
           <School size={24} className="text-blue-600" />
-          <h1 className="text-xl font-bold text-blue-800">Scholarship Portal</h1>
+          <Link to={`/dashboard/user-dashboard/${userId}`} className="text-xl font-bold text-blue-800">Scholarship Portal</Link>
         </div>
         
         <nav className="space-y-1">
@@ -57,21 +52,17 @@ const userId = localStorage.getItem("userId");
             Profile
           </a>
           <a href="#" className="flex items-center gap-3 p-3 rounded-lg text-gray-700 hover:bg-gray-100 font-medium">
-            <FileText size={18} />
-            Applications
-          </a>
-          <a href="#" className="flex items-center gap-3 p-3 rounded-lg text-gray-700 hover:bg-gray-100 font-medium">
             <Award size={18} />
             Scholarships
           </a>
-          <a href="#" className="flex items-center gap-3 p-3 rounded-lg text-gray-700 hover:bg-gray-100 font-medium">
-            <Mail size={18} />
-            Messages
-          </a>
-          <a href="#" className="flex items-center gap-3 p-3 rounded-lg text-gray-700 hover:bg-gray-100 font-medium">
-            <Settings size={18} />
-            Settings
-          </a>
+          <a 
+  href="#" 
+ 
+  className="flex items-center gap-3 p-3 rounded-lg text-gray-700 hover:bg-gray-100 font-medium"
+>
+  <FiLogOut size={18} color='red' />
+  Logout
+</a>
         </nav>
       </div>
 
@@ -93,16 +84,12 @@ const userId = localStorage.getItem("userId");
                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-300 focus:border-blue-500 outline-none transition"
               />
             </div>
-            <button className="p-2 rounded-full bg-white border border-gray-300 hover:bg-gray-100">
-              <Bell size={20} className="text-gray-600" />
-            </button>
             <div className="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-100 cursor-pointer">
               <div className="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-medium">
                 {localStorage.getItem("name").charAt(0).toUpperCase()}
                 {localStorage.getItem("name").charAt(1).toUpperCase()}
               </div>
               <span className="font-medium hidden md:inline">{localStorage.getItem("name")}</span>
-              <ChevronDown size={16} className="text-gray-500 hidden md:inline" />
             </div>
           </div>
         </div>
@@ -244,7 +231,7 @@ const userId = localStorage.getItem("userId");
                 </div>
                 <div>
                   <NavLink to="/personal-Info" className="font-medium">Personal Details</NavLink>
-                  <p className="text-sm text-gray-500">{true ? 'Completed' : 'Pending'}</p>
+                  <p className="text-sm text-gray-500">{status}</p>
                 </div>
               </div>
               
@@ -254,7 +241,7 @@ const userId = localStorage.getItem("userId");
                 </div>
                 <div>
                   <NavLink to={"/address"} className="font-medium">Address</NavLink>
-                  <p className="text-sm text-gray-500">{true ? 'Completed' : 'Pending'}</p>
+                  <p className="text-sm text-gray-500">{statusAddress}</p>
                 </div>
               </div>
               
@@ -264,7 +251,7 @@ const userId = localStorage.getItem("userId");
                 </div>
                 <div>
                   <NavLink to="/education"  className="font-medium">Education</NavLink>
-                  <p className="text-sm text-gray-500">{false ? 'Completed' : 'Pending'}</p>
+                  <p className="text-sm text-gray-500">{statusEdu}</p>
                 </div>
               </div>
               
@@ -274,7 +261,7 @@ const userId = localStorage.getItem("userId");
                 </div>
                 <div>
                   <NavLink to={"docs"} className="font-medium">Documents</NavLink>
-                  <p className="text-sm text-gray-500">{false ? 'Completed' : 'Pending'}</p>
+                  <p className="text-sm text-gray-500"></p>
                 </div>
               </div>
             </div>

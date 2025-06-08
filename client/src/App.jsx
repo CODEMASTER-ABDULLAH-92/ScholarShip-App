@@ -20,7 +20,8 @@ import UpdateScholarship from "./Dashboard/UpdateScholarship";
 import UserDashBoard from "./Dashboard/UserDashBoard";
 import ScholarshipApplication from "./Dashboard/CompleteData";
 import Education from "./pages/Education";
-import BackendSectionNotice from "./compoenent/Backend";
+import RecruiterLoginPage from "./pages/RecruiterLogin";
+import RecruiterRegister from "./pages/RegisterRecruiter";
 const App = () => {
   const homeRef = useRef();
   useEffect(() => {
@@ -44,7 +45,8 @@ const App = () => {
   return (
     <div ref={homeRef}>
       <ToastContainer />
-      {location.pathname.includes("/dashboard/") ? "" : <Navbar />}
+      {location.pathname.includes("/dashboard/") || location.pathname.includes("/recruiter-dashboard") ? "" : <Navbar />}
+
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/personal-Info" element={<PersonalDetail />} />
@@ -72,6 +74,14 @@ const App = () => {
           path="/dashboard/data/:id"
           element={<ScholarshipApplication />}
         />
+
+
+
+{/* Recuriter  */}
+
+{location.pathname.includes("/recruiter-dashboard") ? <Route element={<DashPage/>} path="/recruiter-dashboard"/> :""}
+<Route path="/recruiter-login" element={<RecruiterLoginPage/>} />
+<Route path="/recruiter-register" element={<RecruiterRegister/>}/>
       </Routes>
       <Footer />
     </div>

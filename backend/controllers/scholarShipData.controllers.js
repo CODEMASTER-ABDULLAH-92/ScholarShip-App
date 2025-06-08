@@ -99,11 +99,21 @@ const removeScholarShipDetails = async (req, res) => {
   }
 };
 
+const singleScholarData = async (req,res) => {
+  try {
+    const {recruiterId} = req.recruiter._id;
+    console.log(req.recruiter);
+    
+  } catch (error) {
+    
+  }
+}
 export {
   addScholarShipDetails,
   removeScholarShipDetails,
   listScholarShipDetails,
   updateScholarShipDetails,
+  singleScholarData
 };
 
 // app.get('/delete/:id', async (req,res)=>{

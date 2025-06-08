@@ -108,7 +108,21 @@ const singlePersonInfo = async (req, res) => {
     const userId = req.user._id;
     console.log("req.user =", req.user); 
     const data = await personalModel.findOne({ userId });
-    res.json({ success: true, message: "Getting Data Successfully!", data, userId });
+    const isComplete = 
+    data.firstName &&
+    data.lastName &&
+    data.religion &&
+    data.contactNumber &&
+    data.currentInstituteLevel &&
+    data.dateOfAddmission &&
+    data.programFaculty &&
+    data.universityName &&
+    data.dateOfBirth &&
+    data.domicle &&
+    data.familyIncome &&
+    data.passportNumber
+    let status = isComplete ? "Completed" : "Pending"
+    res.json({ success: true, message: "Getting Data Successfully!", data, status });
   } catch (error) {
     res.json({ success: false, message: "Error in Getting Data" });
     console.error("Error in Getting Data", error);

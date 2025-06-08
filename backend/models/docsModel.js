@@ -1,11 +1,7 @@
 import mongoose from 'mongoose';
 
 const docsSchema = new mongoose.Schema({
-    userId: {
-        type: mongoose.Schema.Types.ObjectId, 
-        ref: "user", // Changed to uppercase "User" if your user model is named "User"
-        // required: true
-    },
+    userId:{type:mongoose.Schema.Types.ObjectId, ref:"user"},
     cnicFront: {
         type: String, // Stores file path or URL
         required: true

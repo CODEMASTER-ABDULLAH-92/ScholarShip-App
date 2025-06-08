@@ -7,15 +7,17 @@ const addEducation = async (req, res) => {
             degreeLevel,
             schoolName,
             degreeDiscipline,
-            obtainedMarks, // Note: Frontend uses "ontainedMarks" - needs consistency
+            obtainedMarks,
             totalMarks,
             percentage,
+            
             collegedegreeLevel,
             collegesName,
             collegeDegreeDiscipline,
             collegeObtainedMarks, // Note: Frontend uses "collegeOntainedMarks"
             collegeTotalMarks,
             collegePercentage,
+
             universityDegreeLevel,
             universityName,
             universityCurrentSemeter,
@@ -31,7 +33,7 @@ const addEducation = async (req, res) => {
             degreeLevel,
             schoolName,
             degreeDiscipline,
-            obtainedMarks,
+            obtainedMarks, // thid id not 
             totalMarks,
             percentage,
 
@@ -48,7 +50,7 @@ const addEducation = async (req, res) => {
             universityName,
             universityCurrentSemeter,
             universityDegreeDiscipline,
-            universityObtainedCGPA,
+            universityObtainedCGPA, // this is not 
             universityTotalCGPA,
             universityPercentage
         });
@@ -100,7 +102,28 @@ const singleEducation = async (req,res) =>{
     try {
         const userId = req.user._id;
         const data = await eductionModel.findOne({userId});
-        res.json({success:true, message:"Education fetched successfully",data});
+        const isCompleted =             
+        data.degreeLevel &&
+        data.schoolName &&
+        data.degreeDiscipline &&
+        data.obtainedMarks &&
+        data.totalMarks &&
+        data.percentage &&
+        data.collegedegreeLevel &&
+        data.collegesName &&
+        data.collegeDegreeDiscipline &&
+        data.collegeObtainedMarks &&
+        data.collegeTotalMarks &&
+        data.collegePercentage &&
+        data.universityDegreeLevel &&
+        data.universityName &&
+        data.universityCurrentSemeter &&
+        data.universityDegreeDiscipline &&
+        data.universityObtainedCGPA &&
+        data.universityTotalCGPA &&
+        data.universityPercentage
+        let status = isCompleted ? "Completed" : "Pending"
+        res.json({success:true, message:"Education fetched successfully",data ,status});
     } catch (error) {
         res.json({success:false, message:"Err in fetching education"});
     }

@@ -108,8 +108,7 @@ const handleSubmit = async (e) => {
     if (files.undergrateTranscript) formData.append('undergrateTranscript', files.undergrateTranscript);
     if (files.affidavit) formData.append('affidavit', files.affidavit);
     if (files.domicle) formData.append('domicle', files.domicle);
-
-
+ 
 
     const response = await axios.post(`${url}/api/docs/add-docs`, formData, {
       headers: {
