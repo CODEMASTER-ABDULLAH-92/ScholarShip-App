@@ -103,9 +103,11 @@ const singleScholarData = async (req,res) => {
   try {
     const {recruiterId} = req.recruiter._id;
     console.log(req.recruiter);
-    
+    const data = await ScholarshipModel.findOne({ recruiterId });
+    res.json({success: true, message: "Fetched", data})
   } catch (error) {
-    
+    console.error("Err in ", error);
+    res.json({success:false, message:"Err in fetching "})
   }
 }
 export {

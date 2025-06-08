@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { createContext } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 export const ContextApi = createContext();
 

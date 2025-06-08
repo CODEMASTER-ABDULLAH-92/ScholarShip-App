@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { 
   Award,
   Users,
@@ -19,7 +19,8 @@ import { toast } from 'react-toastify';
 import Cookies from 'js-cookie'
 const DashPage = () => {
   const {data,url} = useContext(ContextApi);
-  // Mock data
+  const [scholarData,setScholarData] = useState([]);
+  const recruiterId = localStorage.getItem("recruiterId");
 const handleDelete = async (id) =>{
   try {
     const response = await axios.delete(`${url}/api/scholarship/remove-scholarShipDetails/${id}`);
@@ -37,18 +38,34 @@ const logoutRecuriter = async () => {
   try {
     const response = await axios.post(`${url}/api/recruiter/recruiter-logout`);
     if (response.data.success) {
+      Cookies.remove("tokenR")
       toast.success(response.data.message);
       localStorage.removeItem("nameR");
       localStorage.removeItem("emailR");
       localStorage.removeItem("recruiterId")
-      Cookies.remove("tokenR")
     }
   } catch (error) {
     error("Err in Logout ", error);
     toast.error(error.response.data.message);
   }
 }
+const getingSingleData = async () => {
+  try {
+    const response = await axios.get(`${url}/api/scholarship/get-single-scholar-info/${recruiterId}`)  
+    if (response.data.success) {
+      setScholarData(response.data.data);
+    }
+  } catch (error) {
+    console.error("Err in getting Data", error);
+    toast.error(error.response.data.message);
+  }
+
+}
+useEffect(()=>{
+  getingSingleData();
+},[scholarData])
   const stats = [
+
     { title: "Total Scholarships", value: "42", icon: <Award size={20} className="text-blue-600" />, change: "+5 this month" },
     { title: "Active Applicants", value: "1,248", icon: <Users size={20} className="text-green-600" />, change: "12% increase" },
     { title: "Applications", value: "856", icon: <FileText size={20} className="text-purple-600" />, change: "32 new today" },
@@ -96,7 +113,7 @@ const logoutRecuriter = async () => {
               
               <div className="flex items-center">
                 <div className="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-medium">
-                  {localStorage.getItem("nameR").charAt(0)}
+                  {/* {localStorage.getItem("nameR").charAt(0)} */}
                 </div>
                 <div className="relative group inline-block">
   <ChevronDown
@@ -172,7 +189,7 @@ const logoutRecuriter = async () => {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {data.map((scholarship) => (
+                {scholarData.map((scholarship) => (
                   <tr key={scholarship.id}>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="font-medium text-gray-900">{scholarship.title}</div>
@@ -196,6 +213,7 @@ const logoutRecuriter = async () => {
             </table>
           </div>
         </div>
+
 
         {/* Recent Applications */}
         <div className="bg-white shadow-sm rounded-lg border border-gray-200">

@@ -101,17 +101,14 @@ const logoutRecruiter = async (req, res) => {
     try {
       res.clearCookie("tokenR", {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-        path: "/",
-        domain: process.env.NODE_ENV === "production" ? ".yourdomain.com" : undefined
+        secure: true,
+        sameSite:"None",
       });
       res.json({ success: true, message: "Logged Out Successfully" });
     } catch (error) {
       console.error("Err in Logged Out", error);
       res.json({ success: false, message: "Err in Logged Out" });
     }
-  };
-  
+};
 
 export {registerRecruiter, loginRecruiter, logoutRecruiter};
