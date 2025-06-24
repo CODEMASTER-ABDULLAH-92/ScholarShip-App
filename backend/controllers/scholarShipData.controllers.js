@@ -1,4 +1,6 @@
+import recruiterModel from "../models/recruiterModel.js";
 import ScholarshipModel from "../models/ScholarModel.js";
+
 const addScholarShipDetails = async (req, res) => {
   try {
     const {
@@ -15,8 +17,11 @@ const addScholarShipDetails = async (req, res) => {
       additionalBenefits,
       deadline,
     } = req.body;
+
+    // ✅ Fix: Use req.recruiter instead of req.recruiterModel
     const data = new ScholarshipModel({
       title,
+      recruiterId: req.recruiter._id,
       description,
       university,
       location,
@@ -29,6 +34,7 @@ const addScholarShipDetails = async (req, res) => {
       additionalBenefits,
       deadline,
     });
+
     await data.save();
     return res.json({ success: true, message: "Data Added", data });
   } catch (error) {
@@ -36,6 +42,7 @@ const addScholarShipDetails = async (req, res) => {
     return res.json({ success: false, message: error.message });
   }
 };
+
 
 const updateScholarShipDetails = async (req, res) => {
   try {
@@ -81,7 +88,7 @@ const updateScholarShipDetails = async (req, res) => {
 const listScholarShipDetails = async (req, res) => {
   try {
     const data = await ScholarshipModel.find({});
-    return res.json({ success: true, message: "Listing all the data", data });
+    return res.json({ success: true, message: "Listing all the data", data});
   } catch (error) {
     console.error("Err in Listing data", error);
     return res.json({ success: false, message: error.message });
@@ -99,17 +106,26 @@ const removeScholarShipDetails = async (req, res) => {
   }
 };
 
-const singleScholarData = async (req,res) => {
+const singleScholarData = async (req, res) => {
   try {
-    const {recruiterId} = req.recruiter._id;
-    console.log(req.recruiter);
-    const data = await ScholarshipModel.findOne({ recruiterId });
-    res.json({success: true, message: "Fetched", data})
+    if (!req.recruiter) {
+      return res.status(401).json({ success: false, message: "Unauthorized: Recruiter not found" });
+    }
+
+    const recruiterId = req.recruiter._id;
+    console.log("Recruiter ID:", recruiterId);
+
+    const data = await ScholarshipModel.find({ recruiterId });
+    console.log("Scholarship found:", data);
+
+    res.json({ success: true, message: "Fetched", data });
   } catch (error) {
-    console.error("Err in ", error);
-    res.json({success:false, message:"Err in fetching "})
+    console.error("Error in fetching scholarship:", error);
+    res.status(500).json({ success: false, message: "Internal server error" });
   }
-}
+};
+
+
 export {
   addScholarShipDetails,
   removeScholarShipDetails,

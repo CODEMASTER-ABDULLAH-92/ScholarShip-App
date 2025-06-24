@@ -25,12 +25,14 @@ const RecruiterLoginPage = () => {
         setPassword("");
         navigate("/recruiter-dashboard");
 
-      localStorage.setItem("recruiterId", response.data.recruiter._id);
-      localStorage.setItem("nameR", response.data.recruiter.name);
-      localStorage.setItem("emailR", response.data.recruiter.email);
+      localStorage.setItem("recruiterId", response.data.isRecruiterExist._id);
+      localStorage.setItem("nameR", response.data.isRecruiterExist.name);
+      localStorage.setItem("emailR", response.data.isRecruiterExist.email);
       // localStorage.setItem("companyR", response.data.recruiter.company);
-      Cookies.set("tokenR", response.data.recruiter.tokenR);
-      }  
+      Cookies.set("tokenR", response.data.tokenR);
+console.log(response.data.tokenR);
+
+    }  
     } catch (error) {
       console.error("Err in Logged In");
       toast.error(error.response.data.message);

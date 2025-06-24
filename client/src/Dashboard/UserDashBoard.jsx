@@ -1,4 +1,6 @@
 import React, { useContext } from 'react';
+
+import axios from 'axios';
 import { FiLogOut } from 'react-icons/fi';
 import { 
   UserCircle,  
@@ -9,19 +11,20 @@ import {
   Bell,
   Search,
 } from "lucide-react";
-
-import { Link, NavLink, useParams } from 'react-router-dom';
+import Cookies from "js-cookie";
+import { toast } from 'react-toastify';
+import { Link, NavLink, useNavigate, useParams } from 'react-router-dom';
 import { ContextApi } from '../Context/ContextApi';
 const UserDashBoard = () => {
   // Mock data for dashboard cards
-
+const navigate = useNavigate();
 
 
 const userId = localStorage.getItem("userId");
-const {status, statusAddress, statusEdu} = useContext(ContextApi);
+const {status, statusAddress, statusEdu, url,totalApplications} = useContext(ContextApi);
   const stats = [
-    { title: "Total Applications", value: "24", icon: <FileText size={20} className="text-blue-600" />, bg: "bg-blue-100" },
-    { title: "Scholarships", value: "5", icon: <Award size={20} className="text-green-600" />, bg: "bg-green-100" },
+    { title: "Total Applications", value: `${totalApplications}`, icon: <FileText size={20} className="text-blue-600" />, bg: "bg-blue-100" },
+    { title: "Applied Scholarships", value: "5", icon: <Award size={20} className="text-green-600" />, bg: "bg-green-100" },
     { title: "Notifications", value: "3", icon: <Bell size={20} className="text-yellow-600" />, bg: "bg-yellow-100" },
     { title: "Profile Completion", value: "75%", icon: <UserCircle size={20} className="text-purple-600" />, bg: "bg-purple-100" },
   ];
@@ -32,7 +35,23 @@ const {status, statusAddress, statusEdu} = useContext(ContextApi);
     { id: 2, title: "Your merit scholarship application was approved", time: "1 day ago", icon: <Award size={16} className="text-green-500" /> },
     { id: 3, title: "Reminder: Complete your profile information", time: "2 days ago", icon: <UserCircle size={16} className="text-purple-500" /> },
   ];
-
+// Logout  
+const handleLogout = async () => {
+  try {
+    const response = await axios.post(`${url}/api/user/logout`);
+    if (response.data.success) {
+      Cookies.remove("token");
+      toast.success("Logged out successfully");
+      navigate("/");
+      localStorage.removeItem("scholarship");
+      localStorage.removeItem("userId");
+      localStorage.removeItem("name");
+      localStorage.removeItem("email");
+    }
+  } catch (error) {
+    toast.error(error.response.data.message);
+  }
+};
   return (
     <div className="flex min-h-screen bg-gray-50">
       {/* Sidebar */}
@@ -47,22 +66,27 @@ const {status, statusAddress, statusEdu} = useContext(ContextApi);
             <Home size={18} />
             Dashboard
           </a>
-          <a href={`/dashboard/data/${userId}`} className="flex items-center gap-3 p-3 rounded-lg text-gray-700 hover:bg-gray-100 font-medium">
-            <UserCircle size={18} />
-            Profile
-          </a>
-          <a href="#" className="flex items-center gap-3 p-3 rounded-lg text-gray-700 hover:bg-gray-100 font-medium">
-            <Award size={18} />
-            Scholarships
-          </a>
-          <a 
-  href="#" 
- 
+          <Link
+  to={status === "Pending" ? `/dashboard/user-dashboard/${userId}` : `/dashboard/data/${userId}`}
+  onClick={(e) => {
+    if (status === "Pending") {
+      e.preventDefault(); // Prevent navigation
+      toast.error("Please complete the Details section first!");
+    }
+  }}
+  className="flex items-center gap-3 p-3 rounded-lg text-gray-700 hover:bg-gray-100 font-medium"
+>
+  <UserCircle size={18} />
+  Profile
+</Link>
+
+          <div 
+ onClick={handleLogout}
   className="flex items-center gap-3 p-3 rounded-lg text-gray-700 hover:bg-gray-100 font-medium"
 >
   <FiLogOut size={18} color='red' />
   Logout
-</a>
+</div>
         </nav>
       </div>
 
@@ -86,8 +110,8 @@ const {status, statusAddress, statusEdu} = useContext(ContextApi);
             </div>
             <div className="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-100 cursor-pointer">
               <div className="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-medium">
-                {localStorage.getItem("name").charAt(0).toUpperCase()}
-                {localStorage.getItem("name").charAt(1).toUpperCase()}
+                {localStorage.getItem("name").charAt(0).toUpperCase() || "k"}
+                {localStorage.getItem("name").charAt(1).toUpperCase() || "k"}
               </div>
               <span className="font-medium hidden md:inline">{localStorage.getItem("name")}</span>
             </div>
@@ -226,12 +250,12 @@ const {status, statusAddress, statusEdu} = useContext(ContextApi);
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               <div className="flex items-center gap-3 p-3 border border-gray-200 rounded-lg">
-                <div className={`h-8 w-8 rounded-full flex items-center justify-center ${true ? 'bg-green-100 text-green-600' : 'bg-gray-100 text-gray-400'}`}>
+                <div className={`h-8 w-8 rounded-full flex items-center justify-center ${true ? 'bg-green-100 text-green-600 disabled:'  : 'bg-gray-100 text-gray-400'}`}>
                   <UserCircle size={16} />
                 </div>
                 <div>
-                  <NavLink to="/personal-Info" className="font-medium">Personal Details</NavLink>
-                  <p className="text-sm text-gray-500">{status}</p>
+                  <NavLink to={`${status === "Completed" ? "": "/personal-Info"}`} className={`${status === "Completed" ? " cursor-not-allowed" : ""} font-medium`} >Personal Details</NavLink>
+                  <p className={` text-sm text-gray-500`}>{status}</p>
                 </div>
               </div>
               
@@ -240,27 +264,28 @@ const {status, statusAddress, statusEdu} = useContext(ContextApi);
                   <Home size={16} />
                 </div>
                 <div>
-                  <NavLink to={"/address"} className="font-medium">Address</NavLink>
+                <NavLink to={`${status === "Completed" ? "": "/address"}`} className={`${status === "Completed" ? " cursor-not-allowed" : ""} font-medium`} >Address</NavLink>
+
                   <p className="text-sm text-gray-500">{statusAddress}</p>
                 </div>
               </div>
               
               <div className="flex items-center gap-3 p-3 border border-gray-200 rounded-lg">
-                <div className={`h-8 w-8 rounded-full flex items-center justify-center ${false ? 'bg-green-100 text-green-600' : 'bg-gray-100 text-gray-400'}`}>
+                <div className={`h-8 w-8 rounded-full flex items-center justify-center ${true ? 'bg-green-100 text-green-600' : 'bg-gray-100 text-gray-400'}`}>
                   <School size={16} />
                 </div>
                 <div>
-                  <NavLink to="/education"  className="font-medium">Education</NavLink>
+                <NavLink to={`${status === "Completed" ? "": "/education"}`} className={`${status === "Completed" ? " cursor-not-allowed" : ""} font-medium`} >Education</NavLink>
                   <p className="text-sm text-gray-500">{statusEdu}</p>
                 </div>
               </div>
               
               <div className="flex items-center gap-3 p-3 border border-gray-200 rounded-lg">
-                <div className={`h-8 w-8 rounded-full flex items-center justify-center ${false ? 'bg-green-100 text-green-600' : 'bg-gray-100 text-gray-400'}`}>
+                <div className={`h-8 w-8 rounded-full flex items-center justify-center ${true ? 'bg-green-100 text-green-600' : 'bg-gray-100 text-gray-400'}`}>
                   <FileText size={16} />
                 </div>
                 <div>
-                  <NavLink to={"docs"} className="font-medium">Documents</NavLink>
+                <NavLink to={`${status === "Completed" ? "": "/docs"}`} className={`${status === "Completed" ? "cursor-not-allowed" : ""} font-medium`} >Documents</NavLink>
                   <p className="text-sm text-gray-500"></p>
                 </div>
               </div>

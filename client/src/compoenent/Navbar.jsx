@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { data, Link, useNavigate, useParams } from "react-router-dom";
 import { FaChevronDown } from "react-icons/fa";
 import {
@@ -16,13 +16,45 @@ import { toast } from "react-toastify";
 import { ContextApi } from "../Context/ContextApi";
 import axios from "axios";
 
+
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showLogIn, setShowLogIn] = useState(false);
   const [showRegister, setShowRegister] = useState(false);
   const { url } = useContext(ContextApi);
-
+  const regRef = useRef();
+  const openPopUp = () => {
+    let intervalId;
+  
+    const handleMouseEnter = () => {
+      intervalId = setInterval(() => {
+        setShowRegister(true);
+        clearInterval(intervalId); // Clear immediately after showing
+      }, 5000);
+    };
+  
+    const handleMouseLeave = () => {
+      clearInterval(intervalId);
+      setShowRegister(false);
+    };
+  
+    regRef.current.addEventListener("mouseenter", handleMouseEnter);
+    regRef.current.addEventListener("mouseleave", handleMouseLeave);
+  
+    // Cleanup function to remove event listeners
+    return () => {
+      clearInterval(intervalId);
+      regRef.current.removeEventListener("mouseenter", handleMouseEnter);
+      regRef.current.removeEventListener("mouseleave", handleMouseLeave);
+    };
+  };
+  
+  useEffect(() => {
+    const cleanup = openPopUp();
+    return cleanup; // This will run when component unmounts
+  }, []);
+  // setShowRegister(!showRegister)
   const userId = localStorage.getItem("userId");
   const navigate = useNavigate();
 
@@ -115,7 +147,7 @@ const Navbar = () => {
       </div>
 
       {/* Register Dropdown */}
-      <div
+      <div ref={regRef}
         onMouseEnter={() => setShowRegister(true)}
         onMouseLeave={() => setShowRegister(false)}
         className="relative"

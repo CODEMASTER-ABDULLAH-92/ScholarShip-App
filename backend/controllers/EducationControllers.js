@@ -50,7 +50,7 @@ const addEducation = async (req, res) => {
             universityName,
             universityCurrentSemeter,
             universityDegreeDiscipline,
-            universityObtainedCGPA, // this is not 
+universityObtainedCGPA, // this is not 
             universityTotalCGPA,
             universityPercentage
         });
@@ -97,12 +97,22 @@ const updateEducation = async (req,res) => {
     }
 }
 
-const singleEducation = async (req,res) =>{
-    
+const singleEducation = async (req, res) => {
+    let status = "Pending";
+  
     try {
-        const userId = req.user._id;
-        const data = await eductionModel.findOne({userId});
-        const isCompleted =             
+      const userId = req.user._id;
+      const data = await eductionModel.findOne({ userId });
+  
+      if (!data) {
+        return res.status(404).json({
+          success: false,
+          data: null,
+          status,
+        });
+      }
+  
+      const isCompleted =
         data.degreeLevel &&
         data.schoolName &&
         data.degreeDiscipline &&
@@ -121,12 +131,26 @@ const singleEducation = async (req,res) =>{
         data.universityDegreeDiscipline &&
         data.universityObtainedCGPA &&
         data.universityTotalCGPA &&
-        data.universityPercentage
-        let status = isCompleted ? "Completed" : "Pending"
-        res.json({success:true, message:"Education fetched successfully",data ,status});
+        data.universityPercentage;
+  
+      status = isCompleted ? "Completed" : "Pending";
+  
+      res.status(200).json({
+        success: true,
+        message: "Education fetched successfully",
+        data,
+        status,
+      });
     } catch (error) {
-        res.json({success:false, message:"Err in fetching education"});
+      console.error("Error fetching education:", error);
+      res.status(500).json({
+        success: false,
+        message: "Error in fetching education",
+        status,
+        data: null,
+      });
     }
-}
+  };
+  
 
 export {addEducation,getEducation,updateEducation,singleEducation};

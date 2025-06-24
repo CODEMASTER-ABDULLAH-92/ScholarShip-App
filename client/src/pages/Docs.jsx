@@ -93,6 +93,7 @@ const Docs = () => {
     }));
   };
 
+  // axios.defaults.withCredentials = true;
 
   // Update your handleSubmit function:
 const handleSubmit = async (e) => {
@@ -109,7 +110,7 @@ const handleSubmit = async (e) => {
     if (files.affidavit) formData.append('affidavit', files.affidavit);
     if (files.domicle) formData.append('domicle', files.domicle);
  
-
+    
     const response = await axios.post(`${url}/api/docs/add-docs`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',

@@ -12,7 +12,7 @@ const personalSchema = new mongoose.Schema({
     dateOfAddmission:{type:String,required:true},
     programFaculty:{type:String,required:true},
     universityName:{type:String,required:true},
-    profileImage:{type:Array},
+    profileImage:{type:Array,required:true},
     dateOfBirth:{type:String,required:true},
     domicle:{type:String,required:true},
     familyIncome:{type:String,required:true},

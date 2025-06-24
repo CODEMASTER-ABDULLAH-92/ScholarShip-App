@@ -13,6 +13,7 @@ import { ContextApi } from '../Context/ContextApi';
 
 const ScholarshipApplication = () => {
   const [scholarshipData, setScholarshipData] = useState(null);
+  const [docs,setdocs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const context = useContext(ContextApi);
@@ -39,6 +40,7 @@ const ScholarshipApplication = () => {
           ...addressData,
           ...docsData,
         };
+        setdocs(docsData)
         setScholarshipData(mergedData);
       } catch (err) {
         console.error('Data processing error:', err);
@@ -123,7 +125,7 @@ const ScholarshipApplication = () => {
               </div>
             </div>
         </div>
-<img src={scholarshipData.cnicFront} className='h-[100px] w-[100px]' alt="" />
+<img src={scholarshipData.profileImage} className='h-[100px] w-[100px]' alt="" />
         {/* Education Information - Only show if we have education data */}
         {(scholarshipData.universityName !== 'Not provided' || 
           scholarshipData.programFaculty !== 'Not provided') && (
@@ -147,7 +149,7 @@ const ScholarshipApplication = () => {
               <InfoItem label="Discipline" value={scholarshipData.degreeDiscipline} />
             </div>
             <div className="space-y-3">
-              <InfoItem label="Obtained Marks" value={scholarshipData.ontainedMarks} />
+              <InfoItem label="Obtained Marks" value={scholarshipData.obtainedMarks} />
               <InfoItem label="Total Marks" value={scholarshipData.totalMarks} />
               <InfoItem label="Percentage" value={scholarshipData.percentage} />
             </div>
@@ -170,7 +172,7 @@ const ScholarshipApplication = () => {
                 <InfoItem label="Discipline" value={scholarshipData.collegeDegreeDiscipline} />
               </div>
               <div className="space-y-3">
-                <InfoItem label="Obtained Marks" value={scholarshipData.collegeOntainedMarks} />
+                <InfoItem label="Obtained Marks" value={scholarshipData.collegeObtainedMarks} />
                 <InfoItem label="Total Marks" value={scholarshipData.collegeTotalMarks} />
                 <InfoItem label="Percentage" value={scholarshipData.collegePercentage} />
               </div>
@@ -194,7 +196,7 @@ const ScholarshipApplication = () => {
                 <InfoItem label="Discipline" value={scholarshipData.universityDegreeDiscipline} />
               </div>
               <div className="space-y-3">
-                <InfoItem label="Obtained CGPA" value={scholarshipData.universityOntainedCGPA} />
+                <InfoItem label="Obtained CGPA" value={scholarshipData.universityObtainedCGPA} />
                 <InfoItem label="Total CGPA" value={scholarshipData.universityTotalCGPA} />
                 <InfoItem label="Percentage" value={scholarshipData.universityPercentage} />
               </div>
@@ -263,7 +265,6 @@ const ScholarshipApplication = () => {
           </div>
         )}
       </div>
-        <img src={scholarshipData.cnicFront} alt="" />
     </div>
   );
 };
@@ -283,13 +284,13 @@ const DocumentPreview = ({ label, src }) => {
   if (!src || imgError) return null;
 
   return (
-    <div className="border border-gray-200 rounded-lg p-3 hover:shadow-md transition">
+    <div className="border border-gray-200 rounded-lg min-h-[200px] min-w-[200px] p-3 hover:shadow-md transition">
       <p className="font-medium text-gray-700 mb-2">{label}</p>
       <img 
         src={src} 
         alt={label} 
         onError={() => setImgError(true)}
-        className="rounded-lg object-cover h-48 w-full border border-gray-200" 
+        className="rounded-lg object-cover min-h-[100px] min-w-[100px] border border-gray-200" 
       />
     </div>
   );

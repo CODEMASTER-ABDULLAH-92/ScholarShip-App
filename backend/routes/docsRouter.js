@@ -15,5 +15,4 @@ docsRouter.post("/add-docs", upload.fields([
 docsRouter.get("/get-docs",getDocs);
 docsRouter.get("/get-single-docs/:id",verifyToken,getSingleDocs);
 docsRouter.put("/update-docs",updateDocs);
-
 export default docsRouter;

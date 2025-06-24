@@ -15,7 +15,7 @@ const docsSchema = new mongoose.Schema({
         required: true
     
     },
-    domicle: { // Note: Consider renaming to "domicile" for correct spelling
+    domicle: {
         type: String,
         required: true
 

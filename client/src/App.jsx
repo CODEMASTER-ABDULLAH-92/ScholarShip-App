@@ -22,6 +22,7 @@ import ScholarshipApplication from "./Dashboard/CompleteData";
 import Education from "./pages/Education";
 import RecruiterLoginPage from "./pages/RecruiterLogin";
 import RecruiterRegister from "./pages/RegisterRecruiter";
+import BackendConnectionNotice from "./compoenent/Backend";
 const App = () => {
   const homeRef = useRef();
   useEffect(() => {
@@ -41,10 +42,12 @@ const App = () => {
     );
   }, []);
 
+  // axios.defaults.withCredentials = true;
   const location = useLocation();
   return (
     <div ref={homeRef}>
       <ToastContainer />
+      <BackendConnectionNotice/>
       {location.pathname.includes("/dashboard/") || location.pathname.includes("/recruiter-dashboard") ? "" : <Navbar />}
 
       <Routes>

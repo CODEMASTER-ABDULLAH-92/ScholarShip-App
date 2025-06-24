@@ -23,6 +23,9 @@ const RecruiterRegister = () => {
 
 const onSubmitHandler = async (e) => {
   e.preventDefault();
+  if (password != confirmPassword) {
+    return setError("Password Not Matched");
+  }
   try {
     const response = await axios.post(`${url}/api/recruiter/recruiter-register`,{name, company, email, password},{withCredentials:true});
     if (response.data.success) {
@@ -39,7 +42,9 @@ const onSubmitHandler = async (e) => {
       localStorage.setItem("nameR", response.data.recruiter.name);
       localStorage.setItem("emailR", response.data.recruiter.email);
       // localStorage.setItem("companyR", response.data.recruiter.company);
-      Cookies.set("tokenR", response.data.recruiter.tokenR);
+      Cookies.set("tokenR", response.data.tokenR);
+      console.log( response.data.tokenR);
+      
     }
   } catch (error) {
     console.error("Err in register Recruiter" ,error);

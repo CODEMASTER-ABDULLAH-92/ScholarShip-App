@@ -84,7 +84,7 @@ const registerUser = async (req, res) => {
     // Set secure HTTP-only cookie
     const cookieOptions = {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      secure: false,
       sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
       path: "/",
@@ -159,7 +159,7 @@ const LoginUser = async (req,res) => {
 
     res.cookie('token', token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      secure: false,
       sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
@@ -186,7 +186,7 @@ const Logout = async (req, res) => {
   try {
     res.clearCookie("token", {
       httpOnly: true,
-      secure: true, // optional: set to true if using HTTPS
+      secure: false, // optional: set to true if using HTTPS
       sameSite: "None", // adjust according to your frontend/backend setup
     });
 

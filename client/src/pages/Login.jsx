@@ -44,8 +44,7 @@ const LoginPage = () => {
           expires: rememberMe ? 30 : 1, // 30 days if remember me is checked, otherwise 1 day
           secure: process.env.NODE_ENV === 'production',
           sameSite: 'strict'
-        });
-        
+        });        
       } else {
         setError(response.data.message || 'Login failed');
         toast.error(response.data.message || 'Login failed');

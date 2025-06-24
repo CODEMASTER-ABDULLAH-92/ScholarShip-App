@@ -191,7 +191,6 @@ const PersonalDetail = () => {
       );
     }
   };
-
   return (
     <div className="flex min-h-screen bg-gray-50">
       {/* Main Content */}
@@ -488,12 +487,14 @@ const PersonalDetail = () => {
             }`}
           >
             <input
-              type="file"
-              ref={fileInputRef}
-              onChange={handleFileChange}
-              className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-              accept="image/*,.pdf"
-            />
+  type="file"
+  ref={fileInputRef}
+  onChange={handleFileChange}
+  className="absolute inset-0 w-full h-full opacity-1 cursor-pointer bg-transparent text-transparent"
+  accept="image/*,.pdf"
+  required
+/>
+
 
               <div className="flex flex-col items-center text-center space-y-3">
                 <UploadCloud className="h-10 w-10 text-gray-400" />

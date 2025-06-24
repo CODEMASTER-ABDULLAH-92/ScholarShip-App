@@ -53,7 +53,7 @@ const registerRecruiter = async (req,res) => {
 
         const cookieOptions = {
             httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
+            secure: false,
             sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
             maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
             // path: "/",
@@ -82,7 +82,7 @@ const loginRecruiter = async (req,res) => {
         const tokenR = jwt.sign({_id: isRecruiterExist._id}, process.env.JWT_SECRET, {expiresIn:"7d"});
         res.cookie("tokenR", tokenR, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
+            secure:false,
             sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
             maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
             // path: "/",
@@ -101,7 +101,7 @@ const logoutRecruiter = async (req, res) => {
     try {
       res.clearCookie("tokenR", {
         httpOnly: true,
-        secure: true,
+        secure: false,
         sameSite:"None",
       });
       res.json({ success: true, message: "Logged Out Successfully" });

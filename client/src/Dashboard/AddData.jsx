@@ -66,6 +66,7 @@ const NewScholarshipPage = () => {
       const response = await axios.post(
         `${url}/api/scholarship/add-scholarShipDetails`,
         submissionData,
+        {withCredentials:true},
         {
           headers: {
             'Content-Type': 'application/json'
