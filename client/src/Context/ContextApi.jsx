@@ -7,7 +7,7 @@ import { useParams } from "react-router-dom";
 export const ContextApi = createContext();
 
 const ContextProvider = (props) => {
-  const url = "http://localhost:8000";
+  const url = "https://scholar-ship-app-backend-kvt4t23jw.vercel.app";
 
   const [data, setData] = useState([]);
   //User FullDetails Data
