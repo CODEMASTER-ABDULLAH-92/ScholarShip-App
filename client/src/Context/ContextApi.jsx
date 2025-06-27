@@ -110,19 +110,19 @@ const ContextProvider = (props) => {
 
   useEffect(() => {
     if (token && localStorage.getItem("userId")) {
-      fetchData();
       fetchPersonalData();
       fetchAddressData();
       fetchEducationalData();
       fetchDocs();
     }
   }, [token, userId]);
-
-
+  
+  
   useEffect(() => {
     if (data.length > 0) {
       gettingAppTotal();
     }
+    fetchData();
   }, [data]);
   const value = {
     url,
