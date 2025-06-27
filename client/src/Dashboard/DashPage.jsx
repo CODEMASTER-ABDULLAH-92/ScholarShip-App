@@ -18,7 +18,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import Cookies from "js-cookie";
 const DashPage = () => {
-  const { data, url } = useContext(ContextApi);
+  const { data, url ,totalApplications} = useContext(ContextApi);
   const [scholarData, setScholarData] = useState([]);
   const recruiterId = localStorage.getItem("recruiterId");
   console.log("recruiterId::", recruiterId );
@@ -80,7 +80,7 @@ const DashPage = () => {
   const stats = [
     {
       title: "Total Scholarships",
-      value: "42",
+      value: totalApplications,
       icon: <Award size={20} className="text-blue-600" />,
       change: "+5 this month",
     },
@@ -195,18 +195,17 @@ const DashPage = () => {
       <header className="bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16 items-center">
-            <h1 className="text-xl font-bold text-gray-900 from-red-500 to-blue-500 bg-gradient-to-r">
+            <Link to="/recruiter-dashboard" className="text-xl font-bold text-gray-900 from-red-500 to-blue-500 bg-gradient-to-r">
               Scholarship Admin Portal
-            </h1>
+            </Link>
 
             <div className="flex items-center space-x-4">
-              <button className="p-1 rounded-full text-gray-500 hover:text-gray-700 focus:outline-none">
-                <Bell size={20} />
-              </button>
+
 
               <div className="flex items-center">
                 <div className="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-medium">
-                  {localStorage.getItem("nameR").charAt(0)}
+                  {localStorage.getItem("nameR") && localStorage.getItem("nameR").charAt(0).toLocaleUpperCase() || ""}
+                  {localStorage.getItem("nameR") && localStorage.getItem("nameR").charAt(1).toLocaleUpperCase() || ""}
                 </div>
                 <div className="relative group inline-block">
                   <ChevronDown

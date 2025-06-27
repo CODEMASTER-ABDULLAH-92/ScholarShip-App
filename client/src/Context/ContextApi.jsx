@@ -18,6 +18,7 @@ const ContextProvider = (props) => {
   const [status,setStatus] = useState("");
   const [statusEdu,setStatusEdu] = useState("");
   const [statusAddress,setStatusAddress] = useState("");
+  const [statusDocs,setStatusDocs] = useState("");
 
   //Total Applications 
   const [totalApplications,setTotalApplications] = useState([]);
@@ -100,6 +101,7 @@ const ContextProvider = (props) => {
       );
       if (response.data.success) {
         setDocsData(response.data.data);
+        setStatusDocs(response.data.status);
       }
     } catch (error) {
       toast.error(error.response.data.message);
@@ -132,6 +134,7 @@ const ContextProvider = (props) => {
     status,
     statusAddress,
     statusEdu,
+    statusDocs,
     totalApplications
   };
 
