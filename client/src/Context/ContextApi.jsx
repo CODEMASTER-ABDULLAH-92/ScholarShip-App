@@ -7,7 +7,7 @@ import { useParams } from "react-router-dom";
 export const ContextApi = createContext();
 
 const ContextProvider = (props) => {
-  const url = "https://scholar-ship-app-o65e.vercel.app";
+  const url = "http://localhost:8000";
 
   const [data, setData] = useState([]);
   //User FullDetails Data
@@ -108,15 +108,15 @@ const ContextProvider = (props) => {
     }
   };
 
-  
   useEffect(() => {
-    fetchData();
-    fetchPersonalData();
-    fetchAddressData();
-    fetchEducationalData();
-    fetchDocs();
-    gettingAppTotal();
-  }, [token,userId]);
+    if (token && localStorage.getItem("userId")) {
+      fetchData();
+      fetchPersonalData();
+      fetchAddressData();
+      fetchEducationalData();
+      fetchDocs();
+    }
+  }, [token, userId]);
 
 
   useEffect(() => {

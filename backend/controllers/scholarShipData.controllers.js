@@ -87,7 +87,7 @@ const updateScholarShipDetails = async (req, res) => {
 
 const listScholarShipDetails = async (req, res) => {
   try {
-    const data = await ScholarshipModel.find({});
+    const data = await ScholarshipModel.find({}).sort({createdAt:-1});
     return res.json({ success: true, message: "Listing all the data", data});
   } catch (error) {
     console.error("Err in Listing data", error);
